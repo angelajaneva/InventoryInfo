@@ -84,14 +84,14 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
     @Override
     public AnalysisCategoryGas findByAnalysisCategoryAndGas(Analysis analysis, Category category, Gas gas) {
         if (analysis != null && gas != null && category != null)
-            return analysisCategoryGasRepository.findByAnalysis_IdAndCategory_IdAndGas_Id(analysis.getId(), gas.getId(), category.getId());
+            return analysisCategoryGasRepository.findByAnalysis_IdAndCategory_IdAndGas_Id(analysis.getId(), category.getId(),gas.getId());
         else throw new ResourceNotFoundException("Analyse, Gas and Category not founded");
     }
 
     @Override
     public AnalysisCategoryGas findByAnalysisCategoryAndGasName(Analysis analysis, Category category, Gas gas) {
         if (analysis != null && gas != null && category != null)
-            return analysisCategoryGasRepository.findByAnalysis_IdAndCategory_IdAndGasName(analysis.getId(), gas.getId(), category.getName());
+            return analysisCategoryGasRepository.findByAnalysis_IdAndCategory_IdAndGasName(analysis.getId(), category.getId(), gas.getName());
         else throw new ResourceNotFoundException("Analyse, Gas and Category not founded");    }
 
     @Override

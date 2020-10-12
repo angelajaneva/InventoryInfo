@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.time.Year;
 import java.util.ArrayList;
@@ -175,23 +176,23 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
                                 if (gas == null) {
                                     throw new ResourceNotFoundException("Gas not found");
                                 }
-                                //go cuvame name vo promenliva
-                                String name = gas.getName();
-                                //kreirame nov gas za da imame novo id
-                            //     gas = new Gas();
-                            //     gas.setName(name);
-                            //     gas.setConcentrate(concentrate);
-                                if (category != null) {
-                                    analysisCategoryGases.add(createAnalysisCategoryGas(analysis, category, gas, concentrate, fileType));
+
+                                if (category != null && (category.getName() != null || category.getEnglishName() != null)) {
+                                    AnalysisCategoryGas analysisCategoryGas = createAnalysisCategoryGas(analysis,category,gas,concentrate,fileType);
+                                    if (analysisCategoryGas != null) {
+                                        analysisCategoryGases.add(analysisCategoryGas);
+                                    }
                                 }
                             } else {
                                 Gas newGas = getGas(list.get(cell.getColumnIndex() - whichCategoryName));
                           //      newGas.setConcentrate(concentrate);
 
-                                if (category != null) {
+                                if (category != null && (category.getName() != null || category.getEnglishName() != null)) {
                                     //gasService.saveGas(gas);
-                                    analysisCategoryGases.add(createAnalysisCategoryGas(analysis, category, newGas, concentrate, fileType));
-                                }
+                                    AnalysisCategoryGas analysisCategoryGas = createAnalysisCategoryGas(analysis,category,newGas,concentrate,fileType);
+                                    if (analysisCategoryGas != null) {
+                                        analysisCategoryGases.add(analysisCategoryGas);
+                                    }                                }
                             }
                         } else if (cell.getCellType() == CellType._NONE || cell.getCellType() == CellType.BLANK) {
                             skipRow = true;
@@ -215,12 +216,15 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
 
     private AnalysisCategoryGas createAnalysisCategoryGas(Analysis analysis, Category category, Gas gas, double concentrate, FileType fileType) {
 
-        categoryService.saveCategory(category);
+        category = categoryService.saveCategory(category);
 
         AnalysisCategoryGas analysisCategoryGas = analysisCategoryGasService.findByAnalysisCategoryAndGas(analysis, category, gas);
 
         //ako postoe vekje ovaa vrska togas samo da go dodadime concentrate
         if (analysisCategoryGas != null){
+            if (analysisCategoryGas.getConcentrate() == concentrate) {
+                return null;
+            }
              analysisCategoryGas.setConcentrate(concentrate);
              return analysisCategoryGas;
         }
@@ -246,6 +250,22 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
     }
 
     private Category getCategory(Category category, String text, int columnIndex, FileType fileType) {
+        if (fileType == FileType.GAS){
+            Category oldCategory;
+            if (columnIndex == 0) {
+                oldCategory = categoryService.findByName(text);
+            } else {
+                oldCategory = categoryService.findByEnglishName(text);
+            }
+            if (oldCategory != null){
+                category = oldCategory;
+            }
+        }else {
+            Category oldCategory = categoryService.findByEnglishName(text);
+            if (oldCategory != null){
+                category = oldCategory;
+            }
+        }
         // dokolku ima - znaci ima nekoj prefix
         if (text.contains("-")) {
             String prefix = text.substring(0, text.indexOf("-")).trim();

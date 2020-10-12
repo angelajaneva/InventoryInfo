@@ -56,4 +56,14 @@ public class CategoryServiceImpl implements CategoryService {
     public Category findByPrefix(String prefix) {
         return categoryRepository.findByPrefixEquals(prefix);
     }
+
+    @Override
+    public Category findByName(String name) {
+        return categoryRepository.findByNameEquals(name);
+    }
+
+    @Override
+    public Category findByEnglishName(String englishName) {
+        return categoryRepository.findByEnglishNameEquals(englishName);
+    }
 }

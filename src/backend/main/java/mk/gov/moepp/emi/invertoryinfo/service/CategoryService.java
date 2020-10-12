@@ -23,4 +23,8 @@ public interface CategoryService {
 
     Category findByPrefix(String prefix);
 
+    Category findByName(String name);
+
+    Category findByEnglishName(String englishName);
+
 }

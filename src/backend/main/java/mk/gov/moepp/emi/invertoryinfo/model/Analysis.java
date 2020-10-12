@@ -21,22 +21,14 @@ public class Analysis {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
-    private String year; // ili int?
+    private String year;
 
     @Column(name = "deleted")
     private boolean deleted = false;
 
-//    @ManyToMany(mappedBy = "category")
-//    private List<Category> categories;
-//
-//    @ManyToMany(mappedBy = "gas")
-//    private List<Gas> gases;
-
     @OneToMany(mappedBy = "analysis", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<AnalysisCategoryGas> categoryGases;
-
-    //Getters and Setters (ne rabote lombok)
 
     public int getId() {
         return id;

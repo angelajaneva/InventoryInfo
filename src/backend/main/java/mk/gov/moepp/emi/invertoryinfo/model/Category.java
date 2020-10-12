@@ -39,18 +39,10 @@ public class Category {
     @JsonIgnore
     private Set<Category> children = new HashSet<>();
 
-//    @ManyToMany
-//    private List<Analysis> analyses;
-//
-//    @ManyToMany
-//    private List<Gas> gases;
-
     //mapped by???
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<AnalysisCategoryGas> analysisGases;
-
-    //Getters and Setters (ne rabote lombok)
 
     public int getId() {
         return id;

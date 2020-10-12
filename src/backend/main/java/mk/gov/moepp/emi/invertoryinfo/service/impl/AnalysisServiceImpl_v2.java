@@ -137,8 +137,7 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
 //                                analysis = getAnalysis(year);
                             } else if (!emptyString(text)) {
                                 fileType = FileType.GAS;
-                                gas = new Gas();
-                                gas.setName(text);
+                                gas = getGas(text);
                             }
                         } else if (text.toLowerCase().equals("categories")) {
                             //go nagoduvame deka tuka ni se kategoriite
@@ -186,13 +185,12 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
                                     analysisCategoryGases.add(createAnalysisCategoryGas(analysis, category, gas, concentrate, fileType));
                                 }
                             } else {
-                                Gas newGas = new Gas();
-                                newGas.setName(list.get(cell.getColumnIndex() - whichCategoryName));
+                                Gas newGas = getGas(list.get(cell.getColumnIndex() - whichCategoryName));
                           //      newGas.setConcentrate(concentrate);
 
                                 if (category != null) {
                                     //gasService.saveGas(gas);
-                                    analysisCategoryGases.add(createAnalysisCategoryGas(analysis, category, gas, concentrate, fileType));
+                                    analysisCategoryGases.add(createAnalysisCategoryGas(analysis, category, newGas, concentrate, fileType));
                                 }
                             }
                         } else if (cell.getCellType() == CellType._NONE || cell.getCellType() == CellType.BLANK) {
@@ -216,27 +214,18 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
     }
 
     private AnalysisCategoryGas createAnalysisCategoryGas(Analysis analysis, Category category, Gas gas, double concentrate, FileType fileType) {
-        List<AnalysisCategoryGas> gasses;
 
         categoryService.saveCategory(category);
 
-//        if (fileType == FileType.YEARLY) {
-//            gasses = analysisCategoryGasService.findByAnalysisAndCategory(analysis, category);
-//        } else {
-//            gasses = analysisCategoryGasService.findByGasAndCategory(gas, category);
-//        }
-//
-//        for (AnalysisCategoryGas temp : gasses) {
-//            if (temp.getGas().getName().equals(gas.getName())) {
-//         //       double concentrate = gas.getConcentrate();
-//       //         gas = temp.getGas();
-//       //         gas.setConcentrate(concentrate);
-//                break;
-//            }
-//        }
-        gasService.saveGas(gas);
+        AnalysisCategoryGas analysisCategoryGas = analysisCategoryGasService.findByAnalysisCategoryAndGas(analysis, category, gas);
 
-        AnalysisCategoryGas analysisCategoryGas = new AnalysisCategoryGas();
+        //ako postoe vekje ovaa vrska togas samo da go dodadime concentrate
+        if (analysisCategoryGas != null){
+             analysisCategoryGas.setConcentrate(concentrate);
+             return analysisCategoryGas;
+        }
+
+        analysisCategoryGas = new AnalysisCategoryGas();
         analysisCategoryGas.setAnalysis(analysis);
         analysisCategoryGas.setCategory(category);
         analysisCategoryGas.setGas(gas);
@@ -245,6 +234,16 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
         return analysisCategoryGas;
     }
 
+    private Gas getGas(String name){
+        Gas gas = gasService.findByNameEquals(name);
+        if (gas != null){
+            return gas;
+        }
+        gas = new Gas();
+        gas.setName(name);
+
+        return gasService.saveGas(gas);
+    }
 
     private Category getCategory(Category category, String text, int columnIndex, FileType fileType) {
         // dokolku ima - znaci ima nekoj prefix

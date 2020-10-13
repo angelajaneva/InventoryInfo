@@ -14,8 +14,7 @@ import java.util.Objects;
 @Entity
 @EqualsAndHashCode(of = "id")
 @Table(name = "analysis_category_gas", indexes = {
-        @Index(name = "IX_Analysis_Category", columnList = "analysis_id,category_id"),
-        @Index(name = "IX_Gasses_Category", columnList = "gas_id,category_id")
+        @Index(name = "IX_Analysis_Category", columnList = "analysis_id,category_id")
 })
 public class AnalysisCategoryGas {
 

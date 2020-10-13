@@ -1,6 +1,5 @@
 package mk.gov.moepp.emi.invertoryinfo.service;
 
-import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
 
 import java.util.List;

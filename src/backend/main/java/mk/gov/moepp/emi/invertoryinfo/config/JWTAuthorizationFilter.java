@@ -36,8 +36,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
 
@@ -48,6 +48,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
+        //go dekodira tokenot
         String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
                 .build()
                 .verify(token.replace(TOKEN_PREFIX,""))

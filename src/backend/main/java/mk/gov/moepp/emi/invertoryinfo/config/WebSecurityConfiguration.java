@@ -4,6 +4,8 @@ import mk.gov.moepp.emi.invertoryinfo.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,15 +41,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/", "/home", "css/**", "/js/**", "/logout").permitAll() //public
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH).hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST).hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
                 .anyRequest().authenticated()
-                .and().formLogin();
-//                .and()
-//                .addFilter(new JWTAuthenticationFilter(authenticationManager(),userDetailsService,passwordEncoder()))
-//                .addFilter(new JWTAuthorizationFilter(authenticationManager(),userDetailsService))
-//
-//                // this disables session creation on Spring Security
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
+                .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(),userDetailsService,passwordEncoder()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(),userDetailsService))
+
+               //  this disables session creation on Spring Security
+              .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
 
     }
 

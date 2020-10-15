@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -22,15 +22,15 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToOne
-    private UserRole userRole;
+    @OneToMany
+    private Collection<UserRole> userRole;
 
     private Boolean active = true;
 
-    public static User createNewUser(String username, String password, UserRole role) {
+    public static User createNewUser(String username, String password, Collection<UserRole> role) {
         User user = new User();
         user.active = true;
-        user.username=username;
+        user.username = username;
         user.password = password;
         user.userRole = role;
         return user;
@@ -38,13 +38,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (userRole==null) {
+        if (userRole == null) {
             return Collections.emptyList();
         }
-        List<GrantedAuthority> auths = new ArrayList<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority(this.userRole.getName());
-        auths.add(authority);
-        return auths;
+        return userRole;
     }
 
     @Override

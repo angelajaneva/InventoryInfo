@@ -1,10 +1,48 @@
 package mk.gov.moepp.emi.invertoryinfo.model.dto;
 
-public class AnalysisCategoryGasDTO {
+public class AnalysisCategoryGasDto {
 
-//    public int id;  ????
-    public String analysis_year;
-    public String category_name;
-    public String gas_name;
-    public double concentrate;
+    private String year;
+    private String gasName;
+    private CategoryDto category;
+    private double concentrate;
+
+    public AnalysisCategoryGasDto(String year, String gasName, CategoryDto category, double concentrate) {
+        this.year = year;
+        this.gasName = gasName;
+        this.category = category;
+        this.concentrate = concentrate;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getGasName() {
+        return gasName;
+    }
+
+    public void setGasName(String gasName) {
+        this.gasName = gasName;
+    }
+
+    public CategoryDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryDto category) {
+        this.category = category;
+    }
+
+    public double getConcentrate() {
+        return concentrate;
+    }
+
+    public void setConcentrate(double concentrate) {
+        this.concentrate = concentrate;
+    }
 }

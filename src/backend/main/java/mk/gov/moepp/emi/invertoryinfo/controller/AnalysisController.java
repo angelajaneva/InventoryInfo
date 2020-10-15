@@ -1,6 +1,7 @@
 package mk.gov.moepp.emi.invertoryinfo.controller;
 
 
+import lombok.Getter;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
 import mk.gov.moepp.emi.invertoryinfo.service.impl.AnalysisServiceImpl_v2;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(path = "/analysis", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/analysis", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class AnalysisController {
 
     private final AnalysisServiceImpl_v2 analysisService;
@@ -22,8 +23,8 @@ public class AnalysisController {
         this.analysisService = analysisService;
     }
 
-    @PostMapping("/upload") // //new annotation since 4.3
-    public void singleFileUpload(@RequestParam("file") MultipartFile file) throws FileNotFoundException {
+    @PostMapping("/upload/gasses/{gasId}") // //new annotation since 4.3
+    public void singleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable Long gasId) throws FileNotFoundException {
 
         if (file.isEmpty()) {
 //            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -31,17 +32,6 @@ public class AnalysisController {
         }
 
         analysisService.saveFromFile(file);
-    }
-
-    @PostMapping("/create") // //new annotation since 4.3
-    public Analysis CreateAnalyse(@RequestBody CreateAnalysisRequest request) throws FileNotFoundException {
-
-        if (request.getFile().isEmpty()) {
-//            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            throw new FileNotFoundException("File not found");
-        }
-
-        return analysisService.saveFromFile(request);
     }
 
     @GetMapping
@@ -54,7 +44,7 @@ public class AnalysisController {
         return analysisService.getAnalysisById(id);
     }
 
-    @PostMapping(path = "/save")
+    @PostMapping()
     public Analysis saveAnalysis(Analysis analysis){
         return analysisService.saveAnalysis(analysis);
     }
@@ -65,9 +55,12 @@ public class AnalysisController {
         return analysisService.editAnalysis(analysis);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "{id}")
     public void deleteAnalysis(@PathVariable int id){
         analysisService.deleteAnalysis(id);
     }
+
+    @GetMapping("{analysisId}/categories/{categoryId}/gases/{gasId}")
+    public void Bla() {}
 
 }

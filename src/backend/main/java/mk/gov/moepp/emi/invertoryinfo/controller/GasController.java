@@ -2,6 +2,7 @@ package mk.gov.moepp.emi.invertoryinfo.controller;
 
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.GasDto;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.GasRequest;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,8 @@ public class GasController {
         return gasService.saveGas(gas);
     }
 
-    @PutMapping(name = "/{id}")
-    public Gas editGas(@PathVariable int id, @RequestBody GasDto gas){
+    @PutMapping(path = "/{id}")
+    public Gas editGas(@PathVariable int id, @RequestBody GasRequest gas){
         return gasService.editGas(id, gas);
     }
 

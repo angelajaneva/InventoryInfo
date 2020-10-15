@@ -27,4 +27,6 @@ public interface CategoryService {
 
     Category findByEnglishName(String englishName);
 
+    List<Category> findAllByIds(List<Integer> list);
+
 }

@@ -4,6 +4,7 @@ import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDTO;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,10 @@ public class AnalysisCategoryGasController {
     }
 
     @PostMapping(path = "/save")
-    public AnalysisCategoryGas save(Analysis analysis, Category category, Gas gas){
+    public AnalysisCategoryGas save(@RequestBody AnalysisCategoryGasDTO dto){
         //voa ako se upotrebuva moze so DTO da se naprave
         // samo da ni pokaze treba koga kje se najave kako kje vmetnuva
-        return analysisCategoryGasService.saveAnalysisCategoryGas(analysis, category, gas);
+        return analysisCategoryGasService.saveAnalysisCategoryGas(dto);
     }
 
     @PatchMapping(path = "/edit")
@@ -74,7 +75,7 @@ public class AnalysisCategoryGasController {
         return analysisCategoryGasService.saveAllAnalysisCategoryGas(analysisCategoryGases);
     }
 
-    @GetMapping(path = "ByGasName")
+    @GetMapping(path = "/ByGasName")
     List<AnalysisCategoryGas> getByGas_Name(String name){
         return analysisCategoryGasService.findByGas_Name(name);
     }

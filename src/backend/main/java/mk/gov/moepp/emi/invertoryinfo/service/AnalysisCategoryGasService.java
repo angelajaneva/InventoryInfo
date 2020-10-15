@@ -4,6 +4,7 @@ import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDTO;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface AnalysisCategoryGasService {
 
     AnalysisCategoryGas getAnalysisCategoryGasById(int id);
 
-    AnalysisCategoryGas saveAnalysisCategoryGas(Analysis analysis, Category category, Gas gas);
+    AnalysisCategoryGas saveAnalysisCategoryGas(AnalysisCategoryGasDTO dto);
 
     AnalysisCategoryGas editAnalysisCategoryGas(AnalysisCategoryGas analysisCategoryGas);
 

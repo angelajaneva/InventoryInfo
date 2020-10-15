@@ -49,6 +49,9 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
         Category category = categoryRepository.findByNameEquals(dto.category_name);
         Gas gas = gasRepository.findByNameEquals(dto.gas_name);
 
+        System.out.println(analysis);
+        System.out.println(category);
+        System.out.println(gas);
 
         if (analysis != null && category != null && gas != null) {
             analysis = analysisRepository.save(analysis);

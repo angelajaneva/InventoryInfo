@@ -1,7 +1,7 @@
 package mk.gov.moepp.emi.invertoryinfo.service;
 
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.Requests.CreateAnalysisRequest;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

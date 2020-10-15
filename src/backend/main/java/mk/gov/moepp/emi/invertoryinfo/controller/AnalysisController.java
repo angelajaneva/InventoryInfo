@@ -2,8 +2,7 @@ package mk.gov.moepp.emi.invertoryinfo.controller;
 
 
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.Requests.CreateAnalysisRequest;
-import mk.gov.moepp.emi.invertoryinfo.service.AnalysisService;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
 import mk.gov.moepp.emi.invertoryinfo.service.impl.AnalysisServiceImpl_v2;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;

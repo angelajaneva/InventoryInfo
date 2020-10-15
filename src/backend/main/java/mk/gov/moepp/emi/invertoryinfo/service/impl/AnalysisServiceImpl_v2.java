@@ -5,7 +5,7 @@ import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.model.Requests.CreateAnalysisRequest;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
 import mk.gov.moepp.emi.invertoryinfo.model.enums.FileType;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;

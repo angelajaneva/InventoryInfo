@@ -4,11 +4,12 @@ import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDTO;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisCategoryGasRepository;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisRepository;
+import mk.gov.moepp.emi.invertoryinfo.repository.CategoryRepository;
+import mk.gov.moepp.emi.invertoryinfo.repository.GasRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;
-import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
-import mk.gov.moepp.emi.invertoryinfo.service.GasService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +20,17 @@ import java.util.List;
 public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasService {
 
     private final AnalysisCategoryGasRepository analysisCategoryGasRepository;
-    private final CategoryService categoryService;
-    private final GasService gasService;
+    private final CategoryRepository categoryRepository;
+    private final GasRepository gasRepository;
     private final AnalysisRepository analysisRepository;
 
-
-    public AnalysisCategoryGasServiceImpl(AnalysisCategoryGasRepository analysisCategoryGasRepository, CategoryService categoryService, GasService gasService, AnalysisRepository analysisRepository) {
+    public AnalysisCategoryGasServiceImpl(AnalysisCategoryGasRepository analysisCategoryGasRepository, CategoryRepository categoryRepository, GasRepository gasRepository, AnalysisRepository analysisRepository) {
         this.analysisCategoryGasRepository = analysisCategoryGasRepository;
-        this.categoryService = categoryService;
-        this.gasService = gasService;
+        this.categoryRepository = categoryRepository;
+        this.gasRepository = gasRepository;
         this.analysisRepository = analysisRepository;
     }
+
 
     @Override
     public List<AnalysisCategoryGas> getAllAnalysisCategoryGas() {
@@ -42,16 +43,23 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
     }
 
     @Override
-    public AnalysisCategoryGas saveAnalysisCategoryGas(Analysis analysis, Category category, Gas gas) {
+    public AnalysisCategoryGas saveAnalysisCategoryGas(AnalysisCategoryGasDTO dto) {
+
+        Analysis analysis = analysisRepository.findByYearEquals(dto.analysis_year);
+        Category category = categoryRepository.findByNameEquals(dto.category_name);
+        Gas gas = gasRepository.findByNameEquals(dto.gas_name);
+
+
         if (analysis != null && category != null && gas != null) {
             analysis = analysisRepository.save(analysis);
-            category = categoryService.saveCategory(category);
-            gas = gasService.saveGas(gas);
+            category = categoryRepository.save(category);
+            gas = gasRepository.save(gas);
 
             AnalysisCategoryGas analysisCategoryGas = new AnalysisCategoryGas();
             analysisCategoryGas.setAnalysis(analysis);
             analysisCategoryGas.setCategory(category);
             analysisCategoryGas.setGas(gas);
+            analysisCategoryGas.setConcentrate(dto.concentrate);
             return analysisCategoryGasRepository.save(analysisCategoryGas);
         }
         else throw new ResourceNotFoundException("Analysis, Category or Gas cant be null");

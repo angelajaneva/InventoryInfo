@@ -1,8 +1,6 @@
-package mk.gov.moepp.emi.invertoryinfo.model.Requests;
+package mk.gov.moepp.emi.invertoryinfo.model.requests;
 
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.Year;
 
 public class CreateAnalysisRequest {
 

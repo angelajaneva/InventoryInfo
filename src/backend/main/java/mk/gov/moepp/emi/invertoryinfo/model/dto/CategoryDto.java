@@ -7,7 +7,7 @@ public class CategoryDto {
     private String mkName;
     private String enName;
     private String prefix;
-    private Integer subcategoryId = null;
+    private Integer subcategoryId = -1;
 
     public CategoryDto(int id, String mkName, String enName, String prefix, Integer subcategoryId) {
         this.id = id;

@@ -128,7 +128,7 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
                         howManyCategoriesInRow = cellNum + 1;
                         String categoryName = cell.getStringCellValue().trim();
                         if (!emptyString(categoryName))
-                            category = getCategory(categoryName,cellNum);
+                            category = getCategory(category, categoryName, cellNum);
                     } else if (isNumber(cell) && howManyCategoriesInRow != Integer.MAX_VALUE){
                         double concentrate = cell.getNumericCellValue();
                         Analysis analysis = years.get(cellNum - howManyCategoriesInRow);
@@ -153,20 +153,15 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
         }
     }
 
-    private Category getCategory(String categoryName, int cellNum){
-        Category category;
-        if (cellNum == MK_NAME){
-            category = categoryService.findByName(categoryName);
+    private Category getCategory(Category category,String categoryName, int cellNum){
+        Category oldCategory;
+        if (cellNum == MK_NAME) {
+            oldCategory = categoryService.findByName(categoryName);
         } else {
-            category = categoryService.findByEnglishName(categoryName);
+            oldCategory = categoryService.findByEnglishName(categoryName);
         }
-        if (category == null){
-            category = new Category();
-            if (cellNum == MK_NAME){
-                category.setName(categoryName);
-            } else {
-                category.setEnglishName(categoryName);
-            }
+        if (oldCategory != null){
+            category = oldCategory;
         }
 
         // dokolku ima - znaci ima nekoj prefix
@@ -174,7 +169,7 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
             String prefix = categoryName.substring(0, categoryName.indexOf("-")).trim();
             category.setPrefix(prefix);
             //prebaruvame dali imame vekje nekoja kategorija so toj prefix i dokolku go nema angliskoto ili makedonskoto ime da se stavi
-            Category oldCategory = categoryService.findByPrefix(category.getPrefix());
+            oldCategory = categoryService.findByPrefix(category.getPrefix());
             if (oldCategory != null) {
                 if (cellNum == MK_NAME){
                     oldCategory.setName(categoryName);
@@ -191,6 +186,11 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
                     category.setSubcategory(subcategory);
                 }
             }
+        }
+        if (cellNum == MK_NAME) {
+            category.setName(categoryName);
+        } else {
+            category.setEnglishName(categoryName);
         }
 
         return category;

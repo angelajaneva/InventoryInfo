@@ -20,10 +20,6 @@ public class UserRole implements GrantedAuthority {
 
     private String name;
 
-    @ManyToOne
-    @JsonManagedReference
-    private User user;
-
     protected UserRole() {
     }
 
@@ -33,15 +29,6 @@ public class UserRole implements GrantedAuthority {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override

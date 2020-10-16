@@ -1,6 +1,7 @@
 package mk.gov.moepp.emi.invertoryinfo.service;
 
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.AnalysisRequest;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +15,7 @@ public interface AnalysisService {
 
     Analysis saveAnalysis(Analysis analysis);
 
-    Analysis editAnalysis(Analysis analysis);
+    Analysis editAnalysis(int id, AnalysisRequest analysis);
 
     void deleteAnalysis(int id);
 

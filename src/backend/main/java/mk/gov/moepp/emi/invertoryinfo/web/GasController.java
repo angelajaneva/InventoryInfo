@@ -1,9 +1,9 @@
-package mk.gov.moepp.emi.invertoryinfo.controller;
+package mk.gov.moepp.emi.invertoryinfo.web;
 
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.GasDto;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.GasRequest;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +42,7 @@ public class GasController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteGas(@PathVariable int id){
         gasService.deleteGas(id);
     }

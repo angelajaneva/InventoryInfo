@@ -1,8 +1,6 @@
 package mk.gov.moepp.emi.invertoryinfo.service.impl;
 
-import mk.gov.moepp.emi.invertoryinfo.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.GasDto;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.GasRequest;
 import mk.gov.moepp.emi.invertoryinfo.repository.GasRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;

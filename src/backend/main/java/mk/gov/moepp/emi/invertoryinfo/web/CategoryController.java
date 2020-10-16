@@ -1,7 +1,8 @@
-package mk.gov.moepp.emi.invertoryinfo.controller;
+package mk.gov.moepp.emi.invertoryinfo.web;
 
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +31,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category saveCategory(Category category){
+    public Category saveCategory(@RequestBody Category category){
         return categoryService.saveCategory(category);
     }
 
     @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteCategory(@PathVariable int id){
         categoryService.deleteCategory(id);
     }

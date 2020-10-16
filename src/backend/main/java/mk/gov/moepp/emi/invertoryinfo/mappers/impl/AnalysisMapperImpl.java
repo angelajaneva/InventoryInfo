@@ -1,6 +1,6 @@
 package mk.gov.moepp.emi.invertoryinfo.mappers.impl;
 
-import mk.gov.moepp.emi.invertoryinfo.exception.ResourceNotFound;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.mappers.AnalysisMapper;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;

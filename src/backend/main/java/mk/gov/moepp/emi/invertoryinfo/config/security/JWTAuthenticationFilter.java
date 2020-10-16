@@ -1,9 +1,9 @@
-package mk.gov.moepp.emi.invertoryinfo.config;
+package mk.gov.moepp.emi.invertoryinfo.config.security;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mk.gov.moepp.emi.invertoryinfo.exception.PasswordsNotTheSameException;
-import mk.gov.moepp.emi.invertoryinfo.exception.UserNotFoundException;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.PasswordsNotTheSameException;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.UserNotFoundException;
 import mk.gov.moepp.emi.invertoryinfo.model.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import com.auth0.jwt.JWT;
-import static mk.gov.moepp.emi.invertoryinfo.config.SecurityConstants.*;
+import static mk.gov.moepp.emi.invertoryinfo.config.security.SecurityConstants.*;
 
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

@@ -1,11 +1,11 @@
-package mk.gov.moepp.emi.invertoryinfo.controller;
+package mk.gov.moepp.emi.invertoryinfo.web;
 
 
 import mk.gov.moepp.emi.invertoryinfo.mappers.AnalysisMapper;
-import mk.gov.moepp.emi.invertoryinfo.mappers.impl.AnalysisMapperImpl;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisGasDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.AnalysisRequest;
 import mk.gov.moepp.emi.invertoryinfo.service.impl.AnalysisServiceImpl_v2;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
@@ -70,9 +70,9 @@ public class AnalysisController {
     }
 
     // ako treba mozze DTO
-    @PatchMapping(path = "/edit")
-    public Analysis editAnalysis(Analysis analysis){
-        return analysisService.editAnalysis(analysis);
+    @PutMapping(path = "/{id}")
+    public Analysis editAnalysis(@PathVariable int id, @RequestBody AnalysisRequest analysis){
+        return analysisService.editAnalysis(id, analysis);
     }
 
     @DeleteMapping(path = "/{id}")

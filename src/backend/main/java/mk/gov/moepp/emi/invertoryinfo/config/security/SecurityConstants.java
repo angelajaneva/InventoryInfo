@@ -1,4 +1,4 @@
-package mk.gov.moepp.emi.invertoryinfo.config;
+package mk.gov.moepp.emi.invertoryinfo.config.security;
 
 public class SecurityConstants {
     static final String SECRET = "s3cr3tt0k3n";

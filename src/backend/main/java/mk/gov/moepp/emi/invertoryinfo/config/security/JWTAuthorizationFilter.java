@@ -1,4 +1,4 @@
-package mk.gov.moepp.emi.invertoryinfo.config;
+package mk.gov.moepp.emi.invertoryinfo.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static mk.gov.moepp.emi.invertoryinfo.config.SecurityConstants.*;
+import static mk.gov.moepp.emi.invertoryinfo.config.security.SecurityConstants.*;
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {

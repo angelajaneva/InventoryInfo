@@ -1,13 +1,13 @@
 package mk.gov.moepp.emi.invertoryinfo.service.impl;
 
-import mk.gov.moepp.emi.invertoryinfo.exception.FileNotSupported;
-import mk.gov.moepp.emi.invertoryinfo.exception.ResourceNotFound;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.FileNotSupported;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
+import mk.gov.moepp.emi.invertoryinfo.model.requests.AnalysisRequest;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
-import mk.gov.moepp.emi.invertoryinfo.model.enums.FileType;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisService;
@@ -15,7 +15,6 @@ import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.IgnoredErrorType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -62,7 +60,9 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
     }
 
     @Override
-    public Analysis editAnalysis(Analysis analysis) {
+    public Analysis editAnalysis(int id, AnalysisRequest analysisRequest) {
+        Analysis analysis = analysisRepository.findById(id).orElse(new Analysis());
+        analysis.setYear(analysisRequest.getYear());
         return analysisRepository.save(analysis);
     }
 

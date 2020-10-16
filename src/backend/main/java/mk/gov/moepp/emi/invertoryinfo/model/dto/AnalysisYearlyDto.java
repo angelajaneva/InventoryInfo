@@ -28,7 +28,7 @@ public class AnalysisYearlyDto {
 
     public void addNewAnalysis(String gas, AnalysisCategoryGasDto analysisCategoryGas){
 
-        analysisHashMap.computeIfAbsent(year, key -> new ArrayList<>()).add(analysisCategoryGas);
+        analysisHashMap.computeIfAbsent(gas, key -> new ArrayList<>()).add(analysisCategoryGas);
 
     }
 

@@ -22,6 +22,14 @@ public class AnalysisYearlyDto {
         return analysisHashMap;
     }
 
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
     public void setHashMap(HashMap<String, List<AnalysisCategoryGasDto>> hashMap) {
         this.analysisHashMap = hashMap;
     }

@@ -42,6 +42,7 @@ public class AnalysisMapperImpl implements AnalysisMapper {
         List<Gas> gasList = gasService.findAllByIds(gassesId);
         List<Category> categoryList = categoryService.findAllByIds(categoriesId);
         AnalysisYearlyDto analysisYearlyDto = new AnalysisYearlyDto();
+        analysisYearlyDto.setYear(analysis.getYear());
 
         for (var gas : gasList){
             for (var category : categoryList){

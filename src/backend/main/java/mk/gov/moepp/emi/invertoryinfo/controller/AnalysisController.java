@@ -49,8 +49,8 @@ public class AnalysisController {
         return analysisMapper.getByGas(gas, Arrays.asList(analysisId),Arrays.asList(categoryId));
     }
 
-    @GetMapping(path = "/{year}")
-    public AnalysisYearlyDto getAllByYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
+    @GetMapping(path = "/yearly/{year}")
+    public AnalysisYearlyDto getAllBaryYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
         return analysisMapper.getByYear(year,Arrays.asList(gassesId),Arrays.asList(categoryId));
     }
 

@@ -18,6 +18,10 @@ public interface AnalysisService {
 
     void deleteAnalysis(int id);
 
+    Analysis getByYear(String year);
+
+    List<Analysis> findAllByIds(List<Integer> list);
+
     Analysis saveFromFile(CreateAnalysisRequest request);
 
     void saveFromFile(MultipartFile file, String gasName);

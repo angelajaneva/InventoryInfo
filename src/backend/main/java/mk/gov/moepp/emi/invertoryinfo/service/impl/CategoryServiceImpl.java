@@ -66,4 +66,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Category findByEnglishName(String englishName) {
         return categoryRepository.findByEnglishNameEquals(englishName);
     }
+
+    @Override
+    public List<Category> findAllByIds(List<Integer> list) {
+        return categoryRepository.findAllById(list);
+    }
 }

@@ -1,32 +1,36 @@
 package mk.gov.moepp.emi.invertoryinfo.model.dto;
 
+import mk.gov.moepp.emi.invertoryinfo.model.Category;
+
 public class CategoryDto {
-    private String mk_name;
-    private String en_name;
+    private int id;
+    private String mkName;
+    private String enName;
     private String prefix;
-    private CategoryDto subcategory;
+    private Integer subcategoryId = null;
 
-    public CategoryDto(String mk_name, String en_name, String prefix, CategoryDto subcategory) {
-        this.mk_name = mk_name;
-        this.en_name = en_name;
+    public CategoryDto(int id, String mkName, String enName, String prefix, Integer subcategoryId) {
+        this.id = id;
+        this.mkName = mkName;
+        this.enName = enName;
         this.prefix = prefix;
-        this.subcategory = subcategory;
+        this.subcategoryId = subcategoryId;
     }
 
-    public String getMk_name() {
-        return mk_name;
+    public String getMkName() {
+        return mkName;
     }
 
-    public void setMk_name(String mk_name) {
-        this.mk_name = mk_name;
+    public void setMkName(String mkName) {
+        this.mkName = mkName;
     }
 
-    public String getEn_name() {
-        return en_name;
+    public String getEnName() {
+        return enName;
     }
 
-    public void setEn_name(String en_name) {
-        this.en_name = en_name;
+    public void setEnName(String enName) {
+        this.enName = enName;
     }
 
     public String getPrefix() {
@@ -37,11 +41,11 @@ public class CategoryDto {
         this.prefix = prefix;
     }
 
-    public CategoryDto getSubcategory() {
-        return subcategory;
+    public int getSubcategory() {
+        return subcategoryId;
     }
 
-    public void setSubcategory(CategoryDto subcategory) {
-        this.subcategory = subcategory;
+    public void setSubcategory(int subcategory) {
+        this.subcategoryId = subcategory;
     }
 }

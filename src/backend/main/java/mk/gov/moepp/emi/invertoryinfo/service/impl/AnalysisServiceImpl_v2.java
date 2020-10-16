@@ -73,6 +73,16 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
         analysisRepository.save(analysis);
     }
 
+    @Override
+    public Analysis getByYear(String year) {
+        return analysisRepository.findByYearEquals(year);
+    }
+
+    @Override
+    public List<Analysis> findAllByIds(List<Integer> list) {
+        return analysisRepository.findAllById(list);
+    }
+
 
     @Override
     public Analysis saveFromFile(CreateAnalysisRequest request) {
@@ -116,7 +126,7 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
                         years.add(getAnalysis(strYear));
                     } else if (cell.getCellType() == CellType.STRING){
                         howManyCategoriesInRow = cellNum + 1;
-                        String categoryName = cell.getStringCellValue();
+                        String categoryName = cell.getStringCellValue().trim();
                         if (!emptyString(categoryName))
                             category = getCategory(categoryName,cellNum);
                     } else if (isNumber(cell) && howManyCategoriesInRow != Integer.MAX_VALUE){
@@ -185,7 +195,6 @@ public class AnalysisServiceImpl_v2 implements AnalysisService {
 
         return category;
     }
-
 
     private AnalysisCategoryGas createAnalysisCategoryGas(Analysis analysis, Category category, Gas gas, double concentrate) {
 

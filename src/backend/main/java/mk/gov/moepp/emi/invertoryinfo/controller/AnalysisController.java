@@ -1,9 +1,11 @@
 package mk.gov.moepp.emi.invertoryinfo.controller;
 
 
-import lombok.Getter;
+import mk.gov.moepp.emi.invertoryinfo.mappers.AnalysisMapper;
+import mk.gov.moepp.emi.invertoryinfo.mappers.impl.AnalysisMapperImpl;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisGasDto;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
 import mk.gov.moepp.emi.invertoryinfo.service.impl.AnalysisServiceImpl_v2;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -21,9 +24,11 @@ public class AnalysisController {
     //Od tuka ce gi zimame site Dto a site mappinzi ce gi pravime u package "mappers"
     //(ce bide slicno na service, no tamu samo cisti save edit delete se pravat ne se mapira)
     private final AnalysisServiceImpl_v2 analysisService;
+    private final AnalysisMapper analysisMapper;
 
-    public AnalysisController(AnalysisServiceImpl_v2 analysisService){
+    public AnalysisController(AnalysisServiceImpl_v2 analysisService, AnalysisMapper analysisMapper){
         this.analysisService = analysisService;
+        this.analysisMapper = analysisMapper;
     }
 
     //upload pravime so gasName i file (treba prethodno da imame kreirano gas)
@@ -37,6 +42,16 @@ public class AnalysisController {
         }
 
         analysisService.saveFromFile(file, gas);
+    }
+
+    @GetMapping(path = "/gasses/{gas}")
+    public AnalysisGasDto getAllByGas(@PathVariable(name = "gas") String gas, @RequestParam(name = "analysisId") Integer[] analysisId, @RequestParam(name = "categoryId") Integer[] categoryId){
+        return analysisMapper.getByGas(gas, Arrays.asList(analysisId),Arrays.asList(categoryId));
+    }
+
+    @GetMapping(path = "/{year}")
+    public AnalysisYearlyDto getAllByYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
+        return analysisMapper.getByYear(year,Arrays.asList(gassesId),Arrays.asList(categoryId));
     }
 
     @GetMapping

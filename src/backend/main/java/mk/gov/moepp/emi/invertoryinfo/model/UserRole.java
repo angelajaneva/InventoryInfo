@@ -1,6 +1,7 @@
 package mk.gov.moepp.emi.invertoryinfo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,10 @@ public class UserRole implements GrantedAuthority {
 
     private String name;
 
+    @ManyToOne
+    @JsonManagedReference
+    private User user;
+
     protected UserRole() {
     }
 
@@ -28,6 +33,15 @@ public class UserRole implements GrantedAuthority {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

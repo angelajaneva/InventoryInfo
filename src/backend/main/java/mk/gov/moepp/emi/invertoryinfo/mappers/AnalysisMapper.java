@@ -1,6 +1,5 @@
 package mk.gov.moepp.emi.invertoryinfo.mappers;
 
-import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisGasDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
 

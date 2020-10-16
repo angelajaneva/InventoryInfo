@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AnalysisYearlyDto {
+
     String year;
     // Kluc ni e imeto na gasot a listata ni e categoria i concentrate
     HashMap<String, List<AnalysisCategoryGasDto>> analysisHashMap = new HashMap<>();
 
     public AnalysisYearlyDto(){analysisHashMap = new HashMap<>();}
-
 
     public AnalysisYearlyDto(HashMap<String, List<AnalysisCategoryGasDto>> hashMap) {
         this.analysisHashMap = hashMap;

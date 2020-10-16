@@ -64,17 +64,17 @@ public class AnalysisMapperImpl implements AnalysisMapper {
         AnalysisGasDto analysisGasDto = new AnalysisGasDto();
         analysisGasDto.setGas(gas);
 
-        for (int i=0; i<analysisList.size(); i++){
-            for (int j=0; j<categoryList.size(); j++){
-                AnalysisCategoryGasDto analysisCategoryGasDto = mapToAnalysisCategoriesGasDto(analysisList.get(i), categoryList.get(j), gas);
-                analysisGasDto.addNewAnalysis(analysisList.get(i),analysisCategoryGasDto);
+        for (Analysis analysis : analysisList) {
+            for (Category category : categoryList) {
+                AnalysisCategoryGasDto analysisCategoryGasDto = mapToAnalysisCategoriesGasDto(analysis, category, gas);
+                analysisGasDto.addNewAnalysis(analysis, analysisCategoryGasDto);
             }
         }
 
         return analysisGasDto;
     }
 
-    AnalysisCategoryGasDto mapToAnalysisCategoriesGasDto(Analysis analysis, Category category, Gas gas){
+    private AnalysisCategoryGasDto mapToAnalysisCategoriesGasDto(Analysis analysis, Category category, Gas gas){
         AnalysisCategoryGas analysisCategoryGas = analysisCategoryGasService.findByAnalysisCategoryAndGasName(analysis,category,gas);
         if (analysisCategoryGas == null){
             throw new ResourceNotFound("Relation not found");

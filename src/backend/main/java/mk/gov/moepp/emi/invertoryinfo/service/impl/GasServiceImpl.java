@@ -1,6 +1,8 @@
 package mk.gov.moepp.emi.invertoryinfo.service.impl;
 
+import mk.gov.moepp.emi.invertoryinfo.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.GasDto;
 import mk.gov.moepp.emi.invertoryinfo.repository.GasRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -33,7 +35,9 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
-    public Gas editGas(Gas gas) {
+    public Gas editGas(int id, GasDto gasDto) {
+        Gas gas = gasRepository.findById(id).orElse(new Gas());
+        gas.setName(gasDto.getName());
         return gasRepository.save(gas);
     }
 

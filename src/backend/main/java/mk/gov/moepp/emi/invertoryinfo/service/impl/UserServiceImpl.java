@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = User.createNewUser("admin@test.com", passwordEncoder.encode("123"),
-                userRoleRepository.findById("ROLE_ADMIN").orElseThrow(RuntimeException::new));
+                List.of(userRoleRepository.findByName("ROLE_ADMIN").orElseThrow(RuntimeException::new)));
 
         if (userRepository.count() == 0 )
             userRepository.save(user);

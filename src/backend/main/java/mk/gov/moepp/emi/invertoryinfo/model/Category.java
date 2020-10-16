@@ -21,6 +21,7 @@ public class Category {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
 
+    //@Column(name = "mk_name")
     private String name;
 
     //privremeno englishName

@@ -9,9 +9,10 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(path = "/category", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/category", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class CategoryController {
 
+    //I tuka koki mi rece nemame potreba od via site post edit delete
     private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
@@ -28,34 +29,13 @@ public class CategoryController {
         return categoryService.getCategory(id);
     }
 
-    @PostMapping(path = "/save")
+    @PostMapping
     public Category saveCategory(Category category){
         return categoryService.saveCategory(category);
     }
 
-    @PatchMapping(path = "/edit")
-    public Category editCategory(Category category){
-        return categoryService.editCategory(category);
-    }
-
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteCategory(@PathVariable int id){
         categoryService.deleteCategory(id);
     }
-
-    @GetMapping(path = "/byName")
-    public Category getCategoryByName(String name){
-        return categoryService.getCategoryByName(name);
-    }
-
-    @GetMapping(path = "byEnglishName")
-    public Category getCategoryByEnglishName(String name){
-        return categoryService.getCategoryByEnglishName(name);
-    }
-
-    @GetMapping(path = "byPrefix")
-    public Category getByPrefix(String prefix){
-        return categoryService.findByPrefix(prefix);
-    }
-
 }

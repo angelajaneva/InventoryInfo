@@ -4,7 +4,7 @@ import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDTO;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDto;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisCategoryGasRepository;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisRepository;
 import mk.gov.moepp.emi.invertoryinfo.repository.CategoryRepository;
@@ -43,11 +43,11 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
     }
 
     @Override
-    public AnalysisCategoryGas saveAnalysisCategoryGas(AnalysisCategoryGasDTO dto) {
+    public AnalysisCategoryGas saveAnalysisCategoryGas(AnalysisCategoryGasDto dto) {
 
-        Analysis analysis = analysisRepository.findByYearEquals(dto.analysis_year);
-        Category category = categoryRepository.findByNameEquals(dto.category_name);
-        Gas gas = gasRepository.findByNameEquals(dto.gas_name);
+        Analysis analysis = analysisRepository.findByYearEquals(dto.getYear());
+        Category category = categoryRepository.findByNameEquals(dto.getCategory().getMk_name());
+        Gas gas = gasRepository.findByNameEquals(dto.getGasName());
 
         System.out.println(analysis);
         System.out.println(category);
@@ -62,7 +62,7 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
             analysisCategoryGas.setAnalysis(analysis);
             analysisCategoryGas.setCategory(category);
             analysisCategoryGas.setGas(gas);
-            analysisCategoryGas.setConcentrate(dto.concentrate);
+            analysisCategoryGas.setConcentrate(dto.getConcentrate());
             return analysisCategoryGasRepository.save(analysisCategoryGas);
         }
         else throw new ResourceNotFoundException("Analysis, Category or Gas cant be null");

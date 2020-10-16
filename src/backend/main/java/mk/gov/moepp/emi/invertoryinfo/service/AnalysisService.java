@@ -20,6 +20,6 @@ public interface AnalysisService {
 
     Analysis saveFromFile(CreateAnalysisRequest request);
 
-    void saveFromFile(MultipartFile file);
+    void saveFromFile(MultipartFile file, String gasName);
 
 }

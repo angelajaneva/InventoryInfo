@@ -29,7 +29,4 @@ public interface AnalysisCategoryGasService {
     AnalysisCategoryGas findByAnalysisCategoryAndGasName(Analysis analysis, Category category, Gas gas);
 
     List<AnalysisCategoryGas> saveAllAnalysisCategoryGas(List<AnalysisCategoryGas> analysisCategoryGases);
-
-    List<AnalysisCategoryGas> findByGas_Name(String name);
-
 }

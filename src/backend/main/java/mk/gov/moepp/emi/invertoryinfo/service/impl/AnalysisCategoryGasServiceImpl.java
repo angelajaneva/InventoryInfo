@@ -111,8 +111,4 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
         return analysisCategoryGasRepository.saveAll(analysisCategoryGases);
     }
 
-    @Override
-    public List<AnalysisCategoryGas> findByGas_Name(String name) {
-        return analysisCategoryGasRepository.findByGas_Name(name);
-    }
 }

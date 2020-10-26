@@ -72,7 +72,7 @@ class Navigation extends Component {
                             <span className="fa arrow"/></Link>
                         <ul className="nav nav-second-level collapse">
                             {/*{this.getCategories()}*/}
-                            <NavElement cats = {this.state.categories}/>
+                            {/*<NavElement cats = {this.state.categories}/>*/}
                             <li>
                                 <Link to="/minor">Second Level Item</Link></li>
                             <li>

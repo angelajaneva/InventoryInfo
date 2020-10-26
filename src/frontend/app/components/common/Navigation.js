@@ -69,11 +69,15 @@ class Navigation extends Component {
 
                     <li className={this.activeRoute("/minor")}>
 
+
                         <Link to="/minor"><i className="fa fa-sitemap"/> <span className="nav-label">Категории</span>
                             <span className="fa arrow"/></Link>
                         <ul className="nav nav-second-level collapse">
                             {this.getCategories()}
                             {/*<NavElement cats = {this.state.categories}/>*/}
+
+                            {this.state.categories.map(c => <li>{c.name}</li>)}
+
                             <li>
                                 <Link to="/minor">Second Level Item</Link></li>
                             <li>
@@ -90,7 +94,6 @@ class Navigation extends Component {
                                     <li>
                                         <Link to="/minor">Third Level Item</Link>
                                     </li>
-
                                     {/*{this.state.categories.map(category => {*/}
                                     {/*    return (*/}
                                     {/*            <li key={category.id}>*/}

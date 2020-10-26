@@ -43,6 +43,7 @@ class Navigation extends Component {
             <li key={category.id}>
                 {        console.log("aaaa")
                 }
+
                 <Link to="/minor">{category.name}</Link>
             </li>
             )
@@ -71,7 +72,7 @@ class Navigation extends Component {
                         <Link to="/minor"><i className="fa fa-sitemap"/> <span className="nav-label">Категории</span>
                             <span className="fa arrow"/></Link>
                         <ul className="nav nav-second-level collapse">
-                            {/*{this.getCategories()}*/}
+                            {this.getCategories()}
                             {/*<NavElement cats = {this.state.categories}/>*/}
                             <li>
                                 <Link to="/minor">Second Level Item</Link></li>

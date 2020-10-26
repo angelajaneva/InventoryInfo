@@ -5,7 +5,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var config = {
     entry: {
         app: [
-            'webpack-dev-server/client?http://localhost:8000',
+            'webpack-dev-server/client?http://localhost:3000',
             'webpack/hot/only-dev-server',
             './app/index'
         ],

@@ -7,7 +7,7 @@ const NavElement = (props) => {
     return (
 
         <div>
-            {props.category.subcategories == null || props.category.subcategories.length == 0 ?
+            {props.category.subcategories == null || props.category.subcategories.length === 0 ?
                 <li key={props.category.id} className={"nav-item"}>
                     <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
                     <label htmlFor={props.category.id}>{props.category.name}</label>
@@ -15,8 +15,10 @@ const NavElement = (props) => {
                 <li key={props.category.id} className={"nav-item"}>
                     <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
                     <label htmlFor={props.category.id} className={"mx-auto"}>
-                        <span className="nav-label">   {props.category.name}   </span>
-                        <a className={"mx-auto"} data-toggle="collapse" href={"#collapseExample-"+props.category.id} role="button" aria-expanded="false" aria-controls={"collapseExample-"+props.category.id}><span className="fa arrow"/></a>
+                        <a className={"mx-auto"} data-toggle="collapse" href={"#collapseExample-"+props.category.id}
+                           role="button" aria-expanded="false" aria-controls={"collapseExample-"+props.category.id}>
+                            <span className="nav-label">{props.category.name}</span>
+                            <span className="fa arrow"/></a>
                     </label>
                     <div>
                     <ul className={"collapse"} id={"collapseExample-"+props.category.id}>

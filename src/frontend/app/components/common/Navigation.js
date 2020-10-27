@@ -63,7 +63,7 @@ class Navigation extends Component {
                             <span className="nav-label">Категории</span>
                             <span className="fa arrow"/>
                         </Link>
-                        <ul className="nav collapse" id={"collapseExample1"}>
+                        <ul className="nav-second-level collapse" id={"collapseExample1"}>
                             {this.state.categories.map(c => <NavElement category={c} level={3} key={c.id}/>)}
                         </ul>
                     </li>

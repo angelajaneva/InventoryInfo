@@ -493,7 +493,9 @@ body.canvas-menu.mini-navbar .navbar-default .nav div li a span
 body.canvas-menu.mini-navbar .navbar-default .nav li a span {
   display: inline;
 }
-body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span {
+body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span
+body.canvas-menu.mini-navbar .navbar-default .nav div li .profile-element a span
+{
   display: block;
 }
 .canvas-menu.mini-navbar .nav-second-level li a,

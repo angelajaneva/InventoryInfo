@@ -10,6 +10,7 @@ const NavElement = (props) => {
             {props.category.subcategories == null || props.category.subcategories.length === 0 ?
                 <li key={props.category.id} className={"nav-item"}>
                     <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
+
                     <label htmlFor={props.category.id}>{props.category.name}</label>
                 </li> :
                 <li key={props.category.id} className={"nav-item"}>

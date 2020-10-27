@@ -10,7 +10,7 @@ class Navigation extends Component {
         super(props);
 
         this.state = {
-          categories: []
+            categories: []
         }
     }
 
@@ -36,22 +36,11 @@ class Navigation extends Component {
         })
     };
 
-    getCategories = () => {
-        this.state.categories.map(category => {
-            return(
-
-            <li key={category.id}>
-                {        console.log("aaaa")
-                }
-
-                <Link to="/minor">{category.name}</Link>
-            </li>
-            )
-        })
-    };
 
     render() {
-        {console.log(this.state.categories)}
+        {
+            console.log(this.state.categories)
+        }
         return (
             <nav className="navbar-default navbar-static-side" role="navigation">
                 <ul className="nav metismenu" id="side-menu" ref="menu">
@@ -68,51 +57,11 @@ class Navigation extends Component {
                     </li>
 
                     <li className={this.activeRoute("/minor")}>
-
-
-                        <Link to="/minor"><i className="fa fa-sitemap"/> <span className="nav-label">Категории</span>
+                        <Link to="/minor"><i className="fa fa-sitemap"/>
+                            <span className="nav-label">Категории</span>
                             <span className="fa arrow"/></Link>
                         <ul className="nav nav-second-level collapse">
-                            {this.getCategories()}
-                            {/*<NavElement cats = {this.state.categories}/>*/}
-
-                            {this.state.categories.map(c => <li>{c.name}</li>)}
-
-                            <li>
-                                <Link to="/minor">Second Level Item</Link></li>
-                            <li>
-                                <Link to="/minor">Second Level Item</Link></li>
-                            <li>
-                                <Link to="/minor">Third Level <span className="fa arrow"/></Link>
-                                <ul className="nav nav-third-level">
-                                    <li>
-                                        <Link to="/minor">Third Level Item</Link>
-                                    </li>
-                                    <li>
-                                        <Link to={"/minor"}>Third Level Item</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/minor">Third Level Item</Link>
-                                    </li>
-                                    {/*{this.state.categories.map(category => {*/}
-                                    {/*    return (*/}
-                                    {/*            <li key={category.id}>*/}
-                                    {/*        <Link to="/minor">Angela</Link>*/}
-                                    {/*            </li>*/}
-
-                                    {/*        // category.subcategory == null ? (*/}
-                                    {/*    //     <li key={category.id}>*/}
-                                    {/*    // <Link to="/minor">Angela</Link>*/}
-                                    {/*    //     </li>*/}
-                                    {/*    // ) : (*/}
-                                    {/*    //     null*/}
-                                    {/*    //     )*/}
-                                    {/*    )*/}
-                                    {/*})}*/}
-
-                                </ul>
-                            </li>
-
+                            {this.state.categories.map(c => <NavElement category={c} level={3} key={c.id}/>)}
                         </ul>
                     </li>
                 </ul>

@@ -1,6 +1,8 @@
 package mk.gov.moepp.emi.invertoryinfo.web;
 
+import mk.gov.moepp.emi.invertoryinfo.mappers.CategoryMapper;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.NavigationCategoriesDto;
 import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
@@ -15,14 +17,16 @@ public class CategoryController {
 
     //I tuka koki mi rece nemame potreba od via site post edit delete
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, CategoryMapper categoryMapper) {
         this.categoryService = categoryService;
+        this.categoryMapper = categoryMapper;
     }
 
     @GetMapping
-    public List<Category> getAllCategories(){
-        return categoryService.getAllCategories();
+    public List<NavigationCategoriesDto> getAllCategories(){
+        return categoryMapper.getAllCategories();
     }
 
     @GetMapping(path = "/{id}")

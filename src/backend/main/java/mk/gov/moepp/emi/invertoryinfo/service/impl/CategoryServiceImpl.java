@@ -3,6 +3,7 @@ package mk.gov.moepp.emi.invertoryinfo.service.impl;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.repository.CategoryRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
+import org.apache.xmlbeans.impl.repackage.Repackage;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAllBySubcategory(int id) {
+        return categoryRepository.findAllBySubcategory_Id(id);
+    }
+
+    @Override
     public Category findByName(String name) {
         return categoryRepository.findByNameEquals(name);
     }
@@ -70,5 +76,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAllByIds(List<Integer> list) {
         return categoryRepository.findAllById(list);
+    }
+
+    @Override
+    public List<Category> findAllBySubcategoryIsNull() {
+        return categoryRepository.findAllBySubcategoryIsNull();
     }
 }

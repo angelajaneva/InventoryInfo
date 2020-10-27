@@ -1,23 +1,34 @@
 import React from 'react'
-import {Link} from "react-router";
+import $ from "jquery";
 
 const NavElement = (props) => {
 
-    const getCategories = () => {
-        return props.cats.map(category => {
-            return (
-                <div key={category.id}>
-                    <li>
-                        <Link to="/minor">{category.name}</Link>
-                    </li>
-                </div>
-            )
-        })
-    }
-
-
+    $(".collapse").collapse("hide");
     return (
-        {getCategories}
+
+        <div>
+            {props.category.subcategories == null || props.category.subcategories.length == 0 ?
+                <li key={props.category.id} className={"nav-item"}>
+                    <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
+                    <label htmlFor={props.category.id}>{props.category.name}</label>
+                </li> :
+                <li key={props.category.id} className={"nav-item dropdown "}>
+                    <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
+                    <label htmlFor={props.category.id}>
+                        <span className="nav-label">{props.category.name}   </span>
+                        <a  class="btn btn-primary" data-toggle="collapse" href={"#collapseExample"+props.category.id} role="button" aria-expanded="false" aria-controls="collapseExample"><span className="fa arrow"/></a>
+                    </label>
+                    <div>
+                    <ul id={"collapseExample"+props.category.id}>
+                        {props.category.subcategories.map(c => <NavElement category={c} level={props.level + 1}
+                                                                           key={c.id}/>)}
+                    </ul>
+                    </div>
+                </li>
+            }
+        </div>
+
+
     );
 };
 export default NavElement;

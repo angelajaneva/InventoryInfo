@@ -1,3 +1,4 @@
+
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,300,500,700");
 /*
@@ -487,19 +488,14 @@ body.canvas-menu.mini-navbar .navbar-default .nav > li > a {
 }
 body.fixed-sidebar.mini-navbar .nav-label,
 body.fixed-sidebar.mini-navbar .navbar-default .nav li a span,
-body.fixed-sidebar.mini-navbar .navbar-default .nav div li a span,
 body.canvas-menu.mini-navbar .nav-label,
-body.canvas-menu.mini-navbar .navbar-default .nav div li a span
 body.canvas-menu.mini-navbar .navbar-default .nav li a span {
   display: inline;
 }
-body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span
-body.canvas-menu.mini-navbar .navbar-default .nav div li .profile-element a span
-{
+body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span {
   display: block;
 }
 .canvas-menu.mini-navbar .nav-second-level li a,
-.fixed-sidebar.mini-navbar .nav-second-level div li a
 .fixed-sidebar.mini-navbar .nav-second-level li a {
   padding: 7px 10px 7px 52px;
 }
@@ -1145,7 +1141,7 @@ button.dim:active:before {
   background-color: #2A2E36;
   color: #8B91A0;
 }
- TOOGLE SWICH
+TOOGLE SWICH
 .onoffswitch {
   position: relative;
   width: 64px;

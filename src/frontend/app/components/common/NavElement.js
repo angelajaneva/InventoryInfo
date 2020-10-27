@@ -12,14 +12,14 @@ const NavElement = (props) => {
                     <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
                     <label htmlFor={props.category.id}>{props.category.name}</label>
                 </li> :
-                <li key={props.category.id} className={"nav-item dropdown "}>
+                <li key={props.category.id} className={"nav-item"}>
                     <input type={"checkbox"} id={props.category.id} name={props.category.id}/>
-                    <label htmlFor={props.category.id}>
-                        <span className="nav-label">{props.category.name}   </span>
-                        <a  class="btn btn-primary" data-toggle="collapse" href={"#collapseExample"+props.category.id} role="button" aria-expanded="false" aria-controls="collapseExample"><span className="fa arrow"/></a>
+                    <label htmlFor={props.category.id} className={"mx-auto"}>
+                        <span className="nav-label">   {props.category.name}   </span>
+                        <a className={"mx-auto"} data-toggle="collapse" href={"#collapseExample-"+props.category.id} role="button" aria-expanded="false" aria-controls={"collapseExample-"+props.category.id}><span className="fa arrow"/></a>
                     </label>
                     <div>
-                    <ul id={"collapseExample"+props.category.id}>
+                    <ul className={"collapse"} id={"collapseExample-"+props.category.id}>
                         {props.category.subcategories.map(c => <NavElement category={c} level={props.level + 1}
                                                                            key={c.id}/>)}
                     </ul>

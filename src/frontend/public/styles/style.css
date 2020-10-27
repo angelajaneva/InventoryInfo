@@ -178,6 +178,9 @@ h5 {
 .pace-done .nav-header {
   transition: all 0.4s;
 }
+.text-decoration-none{
+  text-decoration: none;
+}
 ul.nav-second-level {
   background: #293846;
 }

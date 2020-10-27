@@ -43,24 +43,27 @@ class Navigation extends Component {
         }
         return (
             <nav className="navbar-default navbar-static-side" role="navigation">
-                <ul className="nav metismenu" id="side-menu" ref="menu">
+                <ul className="nav metismenu text-white" id="side-menu" ref="menu">
                     <li className="nav-header">
                         {/*<ToogleSwitch/>*/}
                     </li>
-                    <li className={this.activeRoute("/main")}>
-                        <Link to="/main"><i className="fa fa-list-ul"/>
+                    <li >
+                        <Link to="#collapseExample" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i className="fa fa-list-ul"/>
                             <span className="nav-label">Години</span>
                             <span className="fa arrow"/>
                         </Link>
-                        <ul className="nav nav-second-level collapse">
+                        <ul className="nav collapse" id={"collapseExample"}>
                         </ul>
                     </li>
 
-                    <li className={this.activeRoute("/minor")}>
-                        <Link to="/minor"><i className="fa fa-sitemap"/>
+                    <li >
+                        <Link to="#collapseExample1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                            <i className="fa fa-list-ul"/>
                             <span className="nav-label">Категории</span>
-                            <span className="fa arrow"/></Link>
-                        <ul className="nav nav-second-level collapse">
+                            <span className="fa arrow"/>
+                        </Link>
+                        <ul className="nav collapse" id={"collapseExample1"}>
                             {this.state.categories.map(c => <NavElement category={c} level={3} key={c.id}/>)}
                         </ul>
                     </li>

@@ -1,9 +1,10 @@
-
 import React, {Component} from 'react';
-import {Link, Location} from 'react-router';
-import ToogleSwitch from "./ToogleSwitch/ToogleSwitch"
+import {Link} from 'react-router';
 import service from "../../axios/axios-repository"
-import NavElement from "./NavElement";
+import NavCategories from "./NavCategories";
+import NavGasses from "./NavGasses";
+import ToogleSwitch from "./ToogleSwitch/ToogleSwitch";
+import NavYear from "./NavYear";
 
 class Navigation extends Component {
 
@@ -11,7 +12,9 @@ class Navigation extends Component {
         super(props);
 
         this.state = {
-            categories: []
+            categories: [],
+            gasses: [],
+            years: []
         }
     }
 
@@ -19,6 +22,8 @@ class Navigation extends Component {
         const {menu} = this.refs;
         $(menu).metisMenu();
         this.loadCategories();
+        this.loadGasses();
+        this.loadYears();
     }
 
     activeRoute(routeName) {
@@ -31,11 +36,57 @@ class Navigation extends Component {
 
     loadCategories = () => {
         service.getCategories().then((response) => {
-            this.setState({
-                categories: response.data
+            this.setState(prevState => {
+                const newValue = {
+                    'categories': response.data
+                };
+
+                return {
+                    ...prevState,
+                    ...newValue
+                };
+                }, [], (err)=>{
+                console.log(err)
+                alert(err);
             })
         })
     };
+
+    loadGasses = () => {
+        service.getGasses().then((response) => {
+            this.setState(prevState => {
+                const newValue = {
+                    'gasses': response.data
+                };
+
+                return {
+                    ...prevState,
+                    ...newValue
+                };
+            }, [], (err)=>{
+                console.log(err)
+                alert(err);
+            })
+        })
+    }
+
+    loadYears = () => {
+        service.getYears().then((response) => {
+            this.setState(prevState => {
+                const newValue = {
+                    'years': response.data
+                };
+
+                return {
+                    ...prevState,
+                    ...newValue
+                };
+            }, [], (err)=>{
+                console.log(err)
+                alert(err);
+            })
+        })
+    }
 
 
     render() {
@@ -44,28 +95,32 @@ class Navigation extends Component {
         }
         return (
             <nav className="navbar-default navbar-static-side" role="navigation">
-                <ul className="nav metismenu text-white" id="side-menu" ref="menu">
-                    <li className="nav-header">
-                        {/*<ToogleSwitch/>*/}
+                <ul className="nav metismenu" id="side-menu" ref="menu">
+                    <li className="nav-label" style={{padding:"10%"}}>
+                        <ToogleSwitch/>
+                        <select value={this.state.years[0]} >
+                            {this.state.years.map(y => <NavYear year={y} key={y.id}/>)}
+                        </select>
                     </li>
-                    <li >
-                        <Link to="#collapseExample" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <li className={"text-white"}>
+                        <Link to="collapseExample" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                             <i className="fa fa-list-ul"/>
-                            <span className="nav-label">Години</span>
+                            <span className="nav-label">Гасови</span>
                             <span className="fa arrow"/>
                         </Link>
                         <ul className="nav collapse" id={"collapseExample"}>
+                            {this.state.gasses.map(g => <NavGasses gas={g} key={g.id}/>)}
                         </ul>
                     </li>
 
-                    <li >
-                        <Link to="#collapseExample1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                    <li className={"text-white"}>
+                        <Link to="collapseExample1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample1">
                             <i className="fa fa-list-ul"/>
                             <span className="nav-label">Категории</span>
                             <span className="fa arrow"/>
                         </Link>
-                        <ul className="nav-second-level collapse" id={"collapseExample1"}>
-                            {this.state.categories.map(c => <NavElement category={c} level={3} key={c.id}/>)}
+                        <ul className="nav nav-second-level collapse" id={"collapseExample1"}>
+                            {this.state.categories.map(c => <NavCategories category={c} key={c.id}/>)}
                         </ul>
                     </li>
                 </ul>

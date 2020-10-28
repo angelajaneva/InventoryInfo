@@ -7,12 +7,12 @@ const NavCategories = (props) => {
 
         <Wrapper>
             {props.category.subcategories == null || props.category.subcategories.length === 0 ?
-                <li key={props.category.id} style={{paddingLeft: "5%"}} className={"nav-item nav-label"}>
+                <li key={props.category.id} className={"nav-item nav-label"}>
                     <label htmlFor={props.category.id} >
                     <input type={"checkbox"} id={props.category.id} name={props.category.id} style={{marginRight:"5px"}} />
                      {props.category.name}</label>
                 </li> :
-                <li key={props.category.id} style={{paddingLeft: "5%"}} className="nav-item nav-label ">
+                <li key={props.category.id}  className="nav-item nav-label ">
                     <label htmlFor={props.category.id} >
                         <input type={"checkbox"} id={props.category.id} name={props.category.id} style={{marginRight:"5px"}}/>
                             {props.category.name}

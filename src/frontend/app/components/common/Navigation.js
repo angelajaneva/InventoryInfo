@@ -5,6 +5,7 @@ import NavCategories from "./NavCategories";
 import NavGasses from "./NavGasses";
 import ToogleSwitch from "./ToogleSwitch/ToogleSwitch";
 import NavYear from "./NavYear";
+import NavCategory from "./NavCategory";
 
 class Navigation extends Component {
 
@@ -45,7 +46,7 @@ class Navigation extends Component {
                     ...prevState,
                     ...newValue
                 };
-                }, [], (err)=>{
+            }, [], (err) => {
                 console.log(err)
                 alert(err);
             })
@@ -63,7 +64,7 @@ class Navigation extends Component {
                     ...prevState,
                     ...newValue
                 };
-            }, [], (err)=>{
+            }, [], (err) => {
                 console.log(err)
                 alert(err);
             })
@@ -81,12 +82,12 @@ class Navigation extends Component {
                     ...prevState,
                     ...newValue
                 };
-            }, [], (err)=>{
+            }, [], (err) => {
                 console.log(err)
                 alert(err);
             })
         })
-    }
+    };
 
 
     render() {
@@ -96,14 +97,15 @@ class Navigation extends Component {
         return (
             <nav className="navbar-default navbar-static-side" role="navigation">
                 <ul className="nav metismenu" id="side-menu" ref="menu">
-                    <li className="nav-label" style={{padding:"10%"}}>
+                    <li className="nav-label" style={{padding: "10%"}}>
                         <ToogleSwitch/>
-                        <select value={this.state.years[0]} >
+                        <select value={this.state.years[0]}>
                             {this.state.years.map(y => <NavYear year={y} key={y.id}/>)}
                         </select>
                     </li>
                     <li className={"text-white"}>
-                        <Link to="collapseExample" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <Link to="collapseExample" data-toggle="collapse" role="button" aria-expanded="false"
+                              aria-controls="collapseExample">
                             <i className="fa fa-list-ul"/>
                             <span className="nav-label">Гасови</span>
                             <span className="fa arrow"/>
@@ -113,14 +115,17 @@ class Navigation extends Component {
                         </ul>
                     </li>
 
-                    <li className={"text-white"}>
-                        <Link to="collapseExample1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample1">
-                            <i className="fa fa-list-ul"/>
+
+                    <li className={this.activeRoute("/")}>
+
+                        <Link to="/minor"><i className="fa fa-sitemap"/>
                             <span className="nav-label">Категории</span>
                             <span className="fa arrow"/>
                         </Link>
-                        <ul className="nav nav-second-level collapse" id={"collapseExample1"}>
-                            {this.state.categories.map(c => <NavCategories category={c} key={c.id}/>)}
+                        <ul className="nav nav-second-level collapse">
+                            {
+                                this.state.categories.map(c => <NavCategory category={c} key={c.id}/>)
+                            }
                         </ul>
                     </li>
                 </ul>

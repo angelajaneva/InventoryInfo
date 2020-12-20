@@ -82,4 +82,9 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAllBySubcategoryIsNull() {
         return categoryRepository.findAllBySubcategoryIsNull();
     }
+
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
 }

@@ -80,7 +80,7 @@ public class AnalysisMapperImpl implements AnalysisMapper {
         if (analysisCategoryGas == null){
             throw new ResourceNotFound("Relation not found");
         }
-        CategoryDto categoryDto = new CategoryDto(category.getId(),category.getName(),category.getEnglishName(),category.getPrefix(), category.getSubcategory() == null?-1:category.getSubcategory().getId());
+        CategoryDto categoryDto = new CategoryDto(category.getId(),category.getName(),category.getEnglishName(), category.getSubcategory() == null?-1:category.getSubcategory().getId());
 
         return new AnalysisCategoryGasDto(analysis.getYear(),gas.getName(),categoryDto,analysisCategoryGas.getConcentrate());
     }

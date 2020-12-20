@@ -33,4 +33,5 @@ public interface CategoryService {
 
     List<Category> findAllBySubcategoryIsNull();
 
+    List<Category> findAll();
 }

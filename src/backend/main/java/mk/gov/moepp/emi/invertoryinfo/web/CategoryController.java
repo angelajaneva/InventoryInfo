@@ -25,8 +25,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<NavigationCategoriesDto> getAllCategories(){
-        return categoryMapper.getAllCategories();
+    public List<Category> getAllCategories(){
+        return  categoryService.getAllCategories();
     }
 
     @GetMapping(path = "/{id}")

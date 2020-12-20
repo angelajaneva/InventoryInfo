@@ -25,6 +25,8 @@ public interface AnalysisService {
 
     Analysis saveFromFile(CreateAnalysisRequest request);
 
+    void saveFromFileYearly(String year, MultipartFile file);
+
     void saveFromFile(MultipartFile file, String gasName);
 
 }

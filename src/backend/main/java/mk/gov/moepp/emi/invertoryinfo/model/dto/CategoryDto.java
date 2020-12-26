@@ -2,15 +2,15 @@ package mk.gov.moepp.emi.invertoryinfo.model.dto;
 
 public class CategoryDto {
     private int id;
-    private String mkName;
+    private String name;
     private String enName;
 //    private String prefix;
     private int parent = -1;
     private boolean checked = false;
 
-    public CategoryDto(int id, String mkName, String enName, int parent) {
+    public CategoryDto(int id, String name, String enName, int parent) {
         this.id = id;
-        this.mkName = mkName;
+        this.name = name;
         this.enName = enName;
         this.parent = parent;
         if (parent == -1){
@@ -42,12 +42,12 @@ public class CategoryDto {
         this.checked = checked;
     }
 
-    public String getMkName() {
-        return mkName;
+    public String getName() {
+        return name;
     }
 
-    public void setMkName(String mkName) {
-        this.mkName = mkName;
+    public void setName(String mkName) {
+        this.name = mkName;
     }
 
     public String getEnName() {

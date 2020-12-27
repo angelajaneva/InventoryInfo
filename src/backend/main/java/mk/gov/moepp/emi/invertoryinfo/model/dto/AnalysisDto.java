@@ -4,23 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnalysisDto {
+    int id;
+    String year;
+    boolean checked;
 
-    List<AnalysisGasDto> gasDtoList = new ArrayList<>();
-    List<AnalysisYearlyDto> yearlyDtoList = new ArrayList<>();
 
-    public List<AnalysisGasDto> getGasDtoList() {
-        return gasDtoList;
+    public AnalysisDto(int id, String year, boolean checked) {
+        this.id = id;
+        this.year = year;
+        this.checked = checked;
     }
 
-    public void setGasDtoList(List<AnalysisGasDto> gasDtoList) {
-        this.gasDtoList = gasDtoList;
+    public int getId() {
+        return id;
     }
 
-    public List<AnalysisYearlyDto> getYearlyDtoList() {
-        return yearlyDtoList;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setYearlyDtoList(List<AnalysisYearlyDto> yearlyDtoList) {
-        this.yearlyDtoList = yearlyDtoList;
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

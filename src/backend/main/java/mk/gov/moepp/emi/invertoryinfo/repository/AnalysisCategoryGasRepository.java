@@ -15,6 +15,10 @@ public interface AnalysisCategoryGasRepository extends JpaRepository<AnalysisCat
 
     List<AnalysisCategoryGas> findByGas_IdAndCategory_Id(int gasId, int categoryId);
 
+    List<AnalysisCategoryGas> findAllByAnalysis_Id(int id);
+
+    List<AnalysisCategoryGas> findAllByGas_Id(int id);
+
     List<AnalysisCategoryGas> findByGas_Name(String name);
 
 }

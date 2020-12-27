@@ -28,5 +28,7 @@ public interface AnalysisCategoryGasService {
 
     AnalysisCategoryGas findByAnalysisCategoryAndGasName(Analysis analysis, Category category, Gas gas);
 
+    List<AnalysisCategoryGas> findAllByGasId (int id);
+
     List<AnalysisCategoryGas> saveAllAnalysisCategoryGas(List<AnalysisCategoryGas> analysisCategoryGases);
 }

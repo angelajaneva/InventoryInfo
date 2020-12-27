@@ -3,6 +3,7 @@ package mk.gov.moepp.emi.invertoryinfo.web;
 
 import mk.gov.moepp.emi.invertoryinfo.mappers.AnalysisMapper;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisGasDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.AnalysisRequest;
@@ -56,9 +57,18 @@ public class AnalysisController {
         analysisService.saveFromFileYearly(year,file);
     }
 
+    @GetMapping(path = "/years")
+    public List<AnalysisDto> getAllYears (){
+        return analysisMapper.getAllYears();
+    }
     @GetMapping(path = "/gasses/{gas}")
     public AnalysisGasDto getAllByGas(@PathVariable(name = "gas") String gas, @RequestParam(name = "analysisId") Integer[] analysisId, @RequestParam(name = "categoryId") Integer[] categoryId){
         return analysisMapper.getByGas(gas, Arrays.asList(analysisId),Arrays.asList(categoryId));
+    }
+
+    @GetMapping(path = "gas/{id}")
+    public List<AnalysisDto> getAllByGasId(@PathVariable int id){
+        return analysisMapper.getByGasId(id);
     }
 
     @GetMapping(path = "/yearly/{year}")

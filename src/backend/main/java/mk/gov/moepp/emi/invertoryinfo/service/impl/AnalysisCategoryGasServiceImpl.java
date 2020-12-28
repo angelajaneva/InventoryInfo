@@ -46,7 +46,7 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
     public AnalysisCategoryGas saveAnalysisCategoryGas(AnalysisCategoryGasDto dto) {
 
         Analysis analysis = analysisRepository.findByYearEquals(dto.getYear());
-        Category category = categoryRepository.findByNameEquals(dto.getCategory().getMkName());
+        Category category = categoryRepository.findByNameEquals(dto.getCategory().getEnName());
         Gas gas = gasRepository.findByNameEquals(dto.getGasName());
 
         System.out.println(analysis);

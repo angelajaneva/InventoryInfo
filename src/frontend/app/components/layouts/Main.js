@@ -11,7 +11,7 @@ class Main extends React.Component {
         let wrapperClass = "gray-bg " + this.props.location.pathname;
         return (
             <div id="wrapper">
-                <Progress />
+                {/*<Progress />*/}
                 <Navigation location={this.props.location}/>
 
                 <div id="page-wrapper" className={wrapperClass}>

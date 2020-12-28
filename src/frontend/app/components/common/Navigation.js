@@ -20,8 +20,8 @@ class Navigation extends Component {
     }
 
     componentDidMount() {
-        const {menu} = this.refs;
-        $(menu).metisMenu();
+        // const {menu} = this.refs;
+        // $(menu).metisMenu();
         this.loadCategories();
         this.loadGasses();
         this.loadYears();
@@ -69,7 +69,7 @@ class Navigation extends Component {
                 alert(err);
             })
         })
-    }
+    };
 
     loadYears = () => {
         service.getYears().then((response) => {
@@ -83,7 +83,7 @@ class Navigation extends Component {
                     ...newValue
                 };
             }, [], (err) => {
-                console.log(err)
+                console.log(err);
                 alert(err);
             })
         })
@@ -98,7 +98,7 @@ class Navigation extends Component {
             <nav className="navbar-default navbar-static-side" role="navigation">
                 <ul className="nav metismenu" id="side-menu" ref="menu">
                     <li className="nav-label" style={{padding: "10%"}}>
-                        <ToogleSwitch/>
+                        {/*<ToogleSwitch/>*/}
                         <select value={this.state.years[0]}>
                             {this.state.years.map(y => <NavYear year={y} key={y.id}/>)}
                         </select>

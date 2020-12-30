@@ -1,22 +1,22 @@
 package mk.gov.moepp.emi.invertoryinfo.mappers.impl;
 
+import com.sun.xml.bind.v2.model.core.ID;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.*;
 import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.mappers.AnalysisMapper;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDto;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisGasDto;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.CategoryDto;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisService;
 import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnalysisMapperImpl implements AnalysisMapper {
@@ -73,6 +73,32 @@ public class AnalysisMapperImpl implements AnalysisMapper {
         }
 
         return analysisGasDto;
+    }
+
+    @Override
+    public List<AnalysisDto> getByGasId(int gasId) {
+        var analysisCategoryGas = analysisCategoryGasService.findAllByGasId(gasId);
+        List<Integer> list = new ArrayList<>();
+        for (var analysis :analysisCategoryGas) {
+            list.add(analysis.getAnalysis().getId());
+        }
+        var analysis = analysisService.findAllByIds(list);
+        return analysis.stream()
+                .map(a -> new AnalysisDto(a.getId(),a.getYear(), false))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AnalysisDto> getAllYears() {
+        var analysisCategoryGas = analysisCategoryGasService.getAllAnalysisCategoryGas();
+        List<Integer> list = new ArrayList<>();
+        for (var analysis :analysisCategoryGas) {
+            list.add(analysis.getAnalysis().getId());
+        }
+        var analysis = analysisService.findAllByIds(list);
+        return analysis.stream()
+                .map(a -> new AnalysisDto(a.getId(),a.getYear(), false))
+                .collect(Collectors.toList());
     }
 
     private AnalysisCategoryGasDto mapToAnalysisCategoriesGasDto(Analysis analysis, Category category, Gas gas){

@@ -46,7 +46,7 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
     public AnalysisCategoryGas saveAnalysisCategoryGas(AnalysisCategoryGasDto dto) {
 
         Analysis analysis = analysisRepository.findByYearEquals(dto.getYear());
-        Category category = categoryRepository.findByNameEquals(dto.getCategory().getEnName());
+        Category category = categoryRepository.findByNameEquals(dto.getCategory().getName());
         Gas gas = gasRepository.findByNameEquals(dto.getGasName());
 
         System.out.println(analysis);
@@ -104,6 +104,11 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
         if (analysis != null && gas != null && category != null)
             return analysisCategoryGasRepository.findByAnalysis_IdAndCategory_IdAndGasName(analysis.getId(), category.getId(), gas.getName());
         else throw new ResourceNotFoundException("Analyse, Gas and Category not founded");    }
+
+    @Override
+    public List<AnalysisCategoryGas> findAllByGasId(int id) {
+        return analysisCategoryGasRepository.findAllByGas_Id(id);
+    }
 
     @Override
     @Transactional

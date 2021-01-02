@@ -7,6 +7,7 @@ import mk.gov.moepp.emi.invertoryinfo.model.Gas;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisCategoryGasDto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AnalysisCategoryGasService {
 
@@ -31,4 +32,6 @@ public interface AnalysisCategoryGasService {
     List<AnalysisCategoryGas> findAllByGasId (int id);
 
     List<AnalysisCategoryGas> saveAllAnalysisCategoryGas(List<AnalysisCategoryGas> analysisCategoryGases);
+
+    Set<AnalysisCategoryGas> findAllByIds(List<Integer> gasIds, List<Integer> categoryIds, List<Integer> analysisIds);
 }

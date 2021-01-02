@@ -2,8 +2,10 @@ package mk.gov.moepp.emi.invertoryinfo.repository;
 
 import mk.gov.moepp.emi.invertoryinfo.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AnalysisCategoryGasRepository extends JpaRepository<AnalysisCategoryGas, Integer> {
 
@@ -20,5 +22,8 @@ public interface AnalysisCategoryGasRepository extends JpaRepository<AnalysisCat
     List<AnalysisCategoryGas> findAllByGas_Id(int id);
 
     List<AnalysisCategoryGas> findByGas_Name(String name);
+
+    @Query("SELECT a FROM AnalysisCategoryGas a WHERE a.gas.id IN :gasIds AND a.category.id IN :categoryIds AND a.analysis.id IN :analysisIds")
+    Set<AnalysisCategoryGas> findAllByIds(List<Integer> gasIds, List<Integer> categoryIds, List<Integer> analysisIds);
 
 }

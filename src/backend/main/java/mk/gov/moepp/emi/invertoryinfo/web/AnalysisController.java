@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -71,7 +72,7 @@ public class AnalysisController {
         return analysisMapper.getByGas(gas, Arrays.asList(analysisId),Arrays.asList(categoryId));
     }
 
-    @GetMapping(path = "gas/{id}")
+    @GetMapping(path = "/gas/{id}")
     public List<AnalysisDto> getAllByGasId(@PathVariable int id){
         return analysisMapper.getByGasId(id);
     }
@@ -79,6 +80,11 @@ public class AnalysisController {
     @GetMapping(path = "/yearly/{year}")
     public AnalysisYearlyDto getAllBaryYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
         return analysisMapper.getByYear(year,Arrays.asList(gassesId),Arrays.asList(categoryId));
+    }
+
+    @GetMapping(path = "/all/data")
+    public Set<AnalysisCategoryGas> getAllByIds(@RequestParam(name = "gasIds")List<Integer> gasIds, @RequestParam(name = "categoryIds")List<Integer> categoryIds, @RequestParam(name = "analysisIds")List<Integer> analysisIds){
+        return analysisCategoryGasService.findAllByIds(gasIds, categoryIds,  analysisIds);
     }
 
     @GetMapping(path = "/all")

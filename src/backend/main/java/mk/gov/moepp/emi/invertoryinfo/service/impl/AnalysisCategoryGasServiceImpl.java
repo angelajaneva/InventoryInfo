@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasService {
@@ -114,6 +115,11 @@ public class AnalysisCategoryGasServiceImpl implements AnalysisCategoryGasServic
     @Transactional
     public List<AnalysisCategoryGas> saveAllAnalysisCategoryGas(List<AnalysisCategoryGas> analysisCategoryGases) {
         return analysisCategoryGasRepository.saveAll(analysisCategoryGases);
+    }
+
+    @Override
+    public Set<AnalysisCategoryGas> findAllByIds(List<Integer> gasIds, List<Integer> categoryIds, List<Integer> analysisIds) {
+        return analysisCategoryGasRepository.findAllByIds(gasIds, categoryIds, analysisIds);
     }
 
 }

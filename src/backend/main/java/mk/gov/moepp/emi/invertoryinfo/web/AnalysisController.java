@@ -83,7 +83,6 @@ public class AnalysisController {
 
     @GetMapping(path = "/all")
     public List<AnalysisCategoryGas> getAll(){
-        System.out.println("angela");
         return analysisCategoryGasService.getAllAnalysisCategoryGas();
     }
 

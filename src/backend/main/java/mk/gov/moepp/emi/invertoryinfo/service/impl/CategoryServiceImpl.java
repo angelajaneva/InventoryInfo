@@ -49,18 +49,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryByEnglishName(String name) {
-        return categoryRepository.findByEnglishNameEquals(name);
-    }
-
-    @Override
     public Category findByPrefix(String prefix) {
         return categoryRepository.findByPrefixEquals(prefix);
     }
 
     @Override
-    public List<Category> findAllBySubcategory(int id) {
-        return categoryRepository.findAllBySubcategory_Id(id);
+    public List<Category> findAllByParent(int id) {
+        return categoryRepository.findAllByParent_Id(id);
     }
 
     @Override
@@ -68,10 +63,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByNameEquals(name);
     }
 
-    @Override
-    public Category findByEnglishName(String englishName) {
-        return categoryRepository.findByEnglishNameEquals(englishName);
-    }
 
     @Override
     public List<Category> findAllByIds(List<Integer> list) {
@@ -80,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAllBySubcategoryIsNull() {
-        return categoryRepository.findAllBySubcategoryIsNull();
+        return categoryRepository.findAllByParentIsNull();
     }
 
     @Override

@@ -11,10 +11,8 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
     Category findByNameEquals(String name);
 
-    Category findByEnglishNameEquals(String englishName);
+    List<Category> findAllByParentIsNull();
 
-    List<Category> findAllBySubcategoryIsNull();
-
-    List<Category> findAllBySubcategory_Id(int id);
+    List<Category> findAllByParent_Id(int id);
 
 }

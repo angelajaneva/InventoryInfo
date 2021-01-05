@@ -19,15 +19,11 @@ public interface CategoryService {
 
     Category getCategoryByName(String name);
 
-    Category getCategoryByEnglishName(String name);
-
     Category findByPrefix(String prefix);
 
-    List<Category> findAllBySubcategory(int id);
+    List<Category> findAllByParent(int id);
 
     Category findByName(String name);
-
-    Category findByEnglishName(String englishName);
 
     List<Category> findAllByIds(List<Integer> list);
 

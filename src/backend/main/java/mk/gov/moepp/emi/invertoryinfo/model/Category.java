@@ -21,29 +21,24 @@ public class Category {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
 
-    //@Column(name = "mk_name")
     private String name;
-
-    //privremeno englishName
-    @Column(name = "en_name")
-    private String englishName;
 
     private String prefix;
 
     //subcategory?
     @ManyToOne
-    @JoinColumn(name = "subcategory", referencedColumnName = "Id")
+    @JoinColumn(name = "parent", referencedColumnName = "Id")
     @JsonManagedReference
-    private Category subcategory;
+    private Category parent;
 
-    @OneToMany(mappedBy = "subcategory",  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent",  cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Category> children = new HashSet<>();
 
     //mapped by???
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<AnalysisCategoryGas> analysisGases;
+    private List<Analysis> analysisGases;
 
     public int getId() {
         return id;
@@ -57,13 +52,7 @@ public class Category {
         this.name = name;
     }
 
-    public String getEnglishName() {
-        return englishName;
-    }
 
-    public void setEnglishName(String englishName) {
-        this.englishName = englishName;
-    }
 
     public String getPrefix() {
         return prefix;
@@ -73,12 +62,12 @@ public class Category {
         this.prefix = prefix;
     }
 
-    public Category getSubcategory() {
-        return subcategory;
+    public Category getParent() {
+        return parent;
     }
 
-    public void setSubcategory(Category subcategory) {
-        this.subcategory = subcategory;
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 
     public Set<Category> getChildren() {

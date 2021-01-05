@@ -1,6 +1,6 @@
 package mk.gov.moepp.emi.invertoryinfo.model.requests;
 
-public class AnalysisRequest {
+public class YearRequest {
     private String year;
 
     public String getYear() {
@@ -11,7 +11,7 @@ public class AnalysisRequest {
         this.year = year;
     }
 
-    public AnalysisRequest(String year) {
+    public YearRequest(String year) {
         this.year = year;
     }
 }

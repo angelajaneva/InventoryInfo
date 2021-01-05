@@ -3,7 +3,7 @@ package mk.gov.moepp.emi.invertoryinfo.mappers.impl;
 import mk.gov.moepp.emi.invertoryinfo.mappers.GasMapper;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.GasDto;
-import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisCategoryGasRepository;
+import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisRepository;
 import mk.gov.moepp.emi.invertoryinfo.repository.GasRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class GasMapperImpl implements GasMapper {
 
     private final GasRepository gasRepository;
-    private final AnalysisCategoryGasRepository analysisCategoryGasRepository;
+    private final AnalysisRepository analysisRepository;
 
-    public GasMapperImpl(GasRepository gasRepository, AnalysisCategoryGasRepository analysisCategoryGasRepository) {
+    public GasMapperImpl(GasRepository gasRepository, AnalysisRepository analysisRepository) {
         this.gasRepository = gasRepository;
-        this.analysisCategoryGasRepository = analysisCategoryGasRepository;
+        this.analysisRepository = analysisRepository;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class GasMapperImpl implements GasMapper {
 
     @Override
     public List<GasDto> getAllGassesFromYear(int yearId) {
-        var analysisCategoryGas = analysisCategoryGasRepository.findAllByAnalysis_Id(yearId);
+        var analysisCategoryGas = analysisRepository.findAllByYear_Id(yearId);
         List<Integer> list = new ArrayList<>();
         for (var analysis : analysisCategoryGas) {
             list.add(analysis.getGas().getId());

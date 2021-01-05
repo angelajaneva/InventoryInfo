@@ -1,26 +1,17 @@
 package mk.gov.moepp.emi.invertoryinfo.model.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AnalysisDto {
-    int id;
-    String year;
-    boolean checked;
 
+    private String year;
+    private String gasName;
+    private CategoryDto category;
+    private double concentrate;
 
-    public AnalysisDto(int id, String year, boolean checked) {
-        this.id = id;
+    public AnalysisDto(String year, String gasName, CategoryDto category, double concentrate) {
         this.year = year;
-        this.checked = checked;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.gasName = gasName;
+        this.category = category;
+        this.concentrate = concentrate;
     }
 
     public String getYear() {
@@ -31,11 +22,27 @@ public class AnalysisDto {
         this.year = year;
     }
 
-    public boolean isChecked() {
-        return checked;
+    public String getGasName() {
+        return gasName;
     }
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
+    public void setGasName(String gasName) {
+        this.gasName = gasName;
+    }
+
+    public CategoryDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryDto category) {
+        this.category = category;
+    }
+
+    public double getConcentrate() {
+        return concentrate;
+    }
+
+    public void setConcentrate(double concentrate) {
+        this.concentrate = concentrate;
     }
 }

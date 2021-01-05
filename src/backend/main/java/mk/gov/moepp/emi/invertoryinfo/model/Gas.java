@@ -22,7 +22,7 @@ public class Gas {
 
     @OneToMany(mappedBy = "gas", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<AnalysisCategoryGas> analysisCategory;
+    private List<Analysis> analysisCategory;
     //Getters and Setters (nesto ne rabote lombok)
 
     public int getId() {

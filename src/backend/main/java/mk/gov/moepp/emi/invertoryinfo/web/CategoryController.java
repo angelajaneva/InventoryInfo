@@ -3,7 +3,6 @@ package mk.gov.moepp.emi.invertoryinfo.web;
 import mk.gov.moepp.emi.invertoryinfo.mappers.CategoryMapper;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.CategoryDto;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.NavigationCategoriesDto;
 import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;

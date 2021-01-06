@@ -1,7 +1,6 @@
 package mk.gov.moepp.emi.invertoryinfo.mappers;
 
-import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisDto;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.YearDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisGasDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
 
@@ -13,7 +12,7 @@ public interface AnalysisMapper {
 
     AnalysisGasDto getByGas(String gasName, List<Integer> gassesId, List<Integer> categoriesId);
 
-    List<AnalysisDto> getByGasId(int gasId);
+    List<YearDto> getByGasId(int gasId);
 
-    List<AnalysisDto> getAllYears();
+    List<YearDto> getAllYears();
 }

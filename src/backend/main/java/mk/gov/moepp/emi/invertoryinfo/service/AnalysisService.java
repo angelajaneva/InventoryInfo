@@ -1,32 +1,35 @@
 package mk.gov.moepp.emi.invertoryinfo.service;
 
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.requests.AnalysisRequest;
-import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
-import org.springframework.web.multipart.MultipartFile;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisDto;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface AnalysisService {
 
     List<Analysis> getAllAnalysis();
 
-    Analysis getAnalysisById(int id);
+    Optional<Analysis> getAnalysis(int id);
 
-    Analysis saveAnalysis(Analysis analysis);
+    Analysis saveAnalysis(AnalysisDto dto);
 
-    Analysis editAnalysis(int id, AnalysisRequest analysis);
+    Analysis editAnalysis(int id, Analysis analysis);
 
     void deleteAnalysis(int id);
 
-    Analysis getByYear(String year);
+    List<Analysis> findByYearAndCategory(int year, int category);
 
-    List<Analysis> findAllByIds(List<Integer> list);
+    List<Analysis> findByGasAndCategory(int gas, int category);
 
-    Analysis saveFromFile(CreateAnalysisRequest request);
+    Analysis findByYearCategoryAndGas(int year, int category, int gas);
 
-    void saveFromFileYearly(String year, MultipartFile file);
+    Analysis findByYearCategoryAndGasName(int year, int category, String gas);
 
-    void saveFromFile(MultipartFile file, String gasName);
+    List<Analysis> findAllByGas (int id);
 
+    List<Analysis> saveAllAnalysis(List<Analysis> analyses);
+
+    Set<Analysis> findAllByIds(List<Integer> gasIds, List<Integer> categoryIds, List<Integer> yearsId);
 }

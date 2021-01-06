@@ -1,48 +1,37 @@
 package mk.gov.moepp.emi.invertoryinfo.service.impl;
 
-import mk.gov.moepp.emi.invertoryinfo.model.exception.FileNotSupported;
-import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
+import mk.gov.moepp.emi.invertoryinfo.model.Year;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.model.requests.AnalysisRequest;
-import mk.gov.moepp.emi.invertoryinfo.model.requests.CreateAnalysisRequest;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisDto;
 import mk.gov.moepp.emi.invertoryinfo.repository.AnalysisRepository;
-import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;
+import mk.gov.moepp.emi.invertoryinfo.repository.YearRepository;
+import mk.gov.moepp.emi.invertoryinfo.repository.CategoryRepository;
+import mk.gov.moepp.emi.invertoryinfo.repository.GasRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisService;
-import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
-import mk.gov.moepp.emi.invertoryinfo.service.GasService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
+
     private final AnalysisRepository analysisRepository;
-    private final CategoryService categoryService;
-    private final GasService gasService;
-    private final AnalysisCategoryGasService analysisCategoryGasService;
-    private final int MK_NAME = 0;
+    private final CategoryRepository categoryRepository;
+    private final GasRepository gasRepository;
+    private final YearRepository yearRepository;
 
-    public AnalysisServiceImpl(AnalysisRepository analysisRepository, CategoryService categoryService, GasService gasService, AnalysisCategoryGasService analysisCategoryGasService) {
+    public AnalysisServiceImpl(AnalysisRepository analysisRepository, CategoryRepository categoryRepository, GasRepository gasRepository, YearRepository yearRepository) {
         this.analysisRepository = analysisRepository;
-        this.categoryService = categoryService;
-        this.gasService = gasService;
-        this.analysisCategoryGasService = analysisCategoryGasService;
+        this.categoryRepository = categoryRepository;
+        this.gasRepository = gasRepository;
+        this.yearRepository = yearRepository;
     }
-
 
     @Override
     public List<Analysis> getAllAnalysis() {
@@ -50,277 +39,89 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public Analysis getAnalysisById(int id) {
-        return analysisRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public Optional<Analysis> getAnalysis(int id) {
+        return analysisRepository.findById(id);
     }
 
     @Override
-    public Analysis saveAnalysis(Analysis analysis) {
-        return analysisRepository.save(analysis);
+    @Transactional
+    public Analysis saveAnalysis(AnalysisDto dto) {
+        Year year = yearRepository.findByYearEquals(dto.getYear());
+        Category category = categoryRepository.findByNameEquals(dto.getCategory().getName());
+        Gas gas = gasRepository.findByNameEquals(dto.getGasName());
+
+        System.out.println(year);
+        System.out.println(category);
+        System.out.println(gas);
+
+        if (year != null && category != null && gas != null) {
+            year = yearRepository.save(year);
+            category = categoryRepository.save(category);
+            gas = gasRepository.save(gas);
+
+            Analysis analysis = new Analysis();
+            analysis.setYear(year);
+            analysis.setCategory(category);
+            analysis.setGas(gas);
+            analysis.setConcentrate(dto.getConcentrate());
+            return analysisRepository.save(analysis);
+        }
+        else throw new ResourceNotFoundException("Analysis, Category or Gas cant be null");
     }
 
     @Override
-    public Analysis editAnalysis(int id, AnalysisRequest analysisRequest) {
-        Analysis analysis = analysisRepository.findById(id).orElse(new Analysis());
-        analysis.setYear(analysisRequest.getYear());
-        return analysisRepository.save(analysis);
+    @Transactional
+    public Analysis editAnalysis(int id, Analysis analysis) {
+        Analysis analysis1 = analysisRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+
+        analysis1.setCategory(analysis.getCategory());
+        analysis1.setGas(analysis.getGas());
+        analysis1.setYear(analysis.getYear());
+        analysis1.setConcentrate(analysis.getConcentrate());
+
+        return analysisRepository.save(analysis1);
     }
 
     @Override
+    @Transactional
     public void deleteAnalysis(int id) {
-        Analysis analysis = analysisRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        analysis.setDeleted(true);
-        analysisRepository.save(analysis);
+        analysisRepository.deleteById(id);
     }
 
     @Override
-    public Analysis getByYear(String year) {
-        return analysisRepository.findByYearEquals(year);
+    public List<Analysis> findByYearAndCategory(int year, int category) {
+        return analysisRepository.findAllByYear_IdAndCategory_Id(year, category);
     }
 
     @Override
-    public List<Analysis> findAllByIds(List<Integer> list) {
-        return analysisRepository.findAllById(list);
-    }
-
-
-    @Override
-    public Analysis saveFromFile(CreateAnalysisRequest request) {
-        return null;
+    public List<Analysis> findByGasAndCategory(int gas, int category) {
+        return analysisRepository.findByGas_IdAndCategory_Id(gas, category);
     }
 
     @Override
-    @Transactional
-    public void saveFromFileYearly(String year, MultipartFile file) {
-        Analysis analysis = getAnalysis(year);
+    public Analysis findByYearCategoryAndGas(int year, int category, int gas) {
+        return analysisRepository.findAllByYear_IdAndCategory_IdAndGas_Id(year,category,gas);
+    }
 
-        XSSFWorkbook workbook = null;
-        try {
-            workbook = new XSSFWorkbook(file.getInputStream());
-            int numberOfSheets = workbook.getNumberOfSheets();
-            if (numberOfSheets > 1) {
-                throw new FileNotSupported("Only support files with 1 sheet");
-            }
-            XSSFSheet xssfSheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = xssfSheet.rowIterator();
-            int howManyCategoriesInRow = Integer.MAX_VALUE;
-            List<Gas> gasses = new ArrayList<>();
-            List<AnalysisCategoryGas> allAnalysis = new ArrayList<>();
+    @Override
+    public Analysis findByYearCategoryAndGasName(int year, int category, String gas) {
+        return analysisRepository.findByYear_IdAndCategory_IdAndGasName(year,category,gas);
+    }
 
-            while (rowIterator.hasNext()){
-             Row row = rowIterator.next();
-             int rowNum = row.getRowNum();
-             Gas gas;
-             Category category = new Category();
-             AnalysisCategoryGas analysisCategoryGas;
-             Iterator<Cell> cellIterator = row.cellIterator();
-             while (cellIterator.hasNext()){
-                 Cell cell = cellIterator.next();
-                 int cellNum = cell.getColumnIndex();
-                 if (cell.getCellType() == CellType._NONE || cell.getCellType() == CellType.BLANK ||cell.getCellType() == CellType.ERROR){
-                     break;
-                 }
-
-                 //ako gi citame gasovite
-                 if (rowNum == 2 && cell.getCellType() == CellType.STRING){
-                     String gasName = cell.getStringCellValue();
-                     if (!isEmptyString(gasName)) {
-                         gasses.add(getGas(gasName));
-                     }
-                 }
-                 else if (rowNum > 2 && cell.getCellType() == CellType.STRING) {
-                     howManyCategoriesInRow = cellNum + 1;
-                     String categoryName = cell.getStringCellValue().trim();
-                     if (!isEmptyString(categoryName))
-                         category = getCategory(category, categoryName, cellNum);
-                 }
-                 else if (rowNum > 2 && isNumber(cell) && howManyCategoriesInRow != Integer.MAX_VALUE){
-                     double concentrate = cell.getNumericCellValue();
-                     gas = gasses.get(cellNum - howManyCategoriesInRow);
-                     if (gas != null && gas.getName() != null){
-                         analysisCategoryGas = createAnalysisCategoryGas(analysis, category,gas,concentrate);
-                         if (analysisCategoryGas != null){
-                             allAnalysis.add(analysisCategoryGas);
-                         }
-                     }
-                 }
-             }
-            }
-            if (!allAnalysis.isEmpty()){
-                analysisCategoryGasService.saveAllAnalysisCategoryGas(allAnalysis);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public List<Analysis> findAllByGas(int id) {
+        return analysisRepository.findAllByGas_Id(id);
     }
 
     @Override
     @Transactional
-    public void saveFromFile(MultipartFile file, String gasName) {
-        Gas gas = gasService.findByNameEquals(gasName);
-        if (gas == null){
-            throw new ResourceNotFound(gasName + " not found");
-        }
-        try {
-            XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-            int numberOfSheets = workbook.getNumberOfSheets();
-            if (numberOfSheets > 1) {
-                throw new FileNotSupported("Only support files with 1 sheet");
-            }
-            XSSFSheet xssfSheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = xssfSheet.rowIterator();
-
-            //doznavame na koj red ni se kategoriite
-            int howManyCategoriesInRow = Integer.MAX_VALUE;
-            List<Analysis> years = new ArrayList<>();
-            List<AnalysisCategoryGas> allAnalysis = new ArrayList<>();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                int rowNum = row.getRowNum();
-                Category category = new Category();
-                AnalysisCategoryGas analysisCategoryGas;
-
-                Iterator<Cell> cellIterator = row.cellIterator();
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    int cellNum = cell.getColumnIndex();
-                    //ako gi citame godinite
-                    if (rowNum == 2 && isNumber(cell)){
-                        double year = cell.getNumericCellValue();
-                        String strYear = getYearFromString(String.valueOf(year));
-                        years.add(getAnalysis(strYear));
-                    }
-                    else if (cell.getCellType() == CellType.STRING){
-                        howManyCategoriesInRow = cellNum + 1;
-                        String categoryName = cell.getStringCellValue().trim();
-                        if (!isEmptyString(categoryName))
-                            category = getCategory(category, categoryName, cellNum);
-                    }
-                    else if (isNumber(cell) && howManyCategoriesInRow != Integer.MAX_VALUE){
-                        double concentrate = cell.getNumericCellValue();
-                        Analysis analysis = years.get(cellNum - howManyCategoriesInRow);
-                        if (analysis != null && (category != null && (category.getName() != null || category.getEnglishName() != null))) {
-                            analysisCategoryGas = createAnalysisCategoryGas(analysis,category,gas,concentrate);
-                            if (analysisCategoryGas != null){
-                                allAnalysis.add(analysisCategoryGas);
-                            }
-                        }
-                    } else if (cellNum > howManyCategoriesInRow){
-                        break;
-                    }
-                }
-            }
-
-            if (!allAnalysis.isEmpty()){
-                analysisCategoryGasService.saveAllAnalysisCategoryGas(allAnalysis);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public List<Analysis> saveAllAnalysis(List<Analysis> analyses) {
+        return analysisRepository.saveAll(analyses);
     }
 
-    private Gas getGas(String name){
-        Gas gas = gasService.findByNameEquals(name);
-        if (gas != null){
-            return gas;
-        }
-        gas = new Gas();
-        gas.setName(name);
-        return gasService.saveGas(gas);
+    @Override
+    public Set<Analysis> findAllByIds(List<Integer> gasIds, List<Integer> categoryIds, List<Integer> yearsId) {
+        return analysisRepository.findAllByIds(gasIds,categoryIds,yearsId);
     }
 
-    private Category getCategory(Category category,String categoryName, int cellNum){
-        Category oldCategory;
-        if (cellNum == MK_NAME) {
-            oldCategory = categoryService.findByName(categoryName);
-        } else {
-            oldCategory = categoryService.findByEnglishName(categoryName);
-        }
-        if (oldCategory != null){
-            category = oldCategory;
-        }
-
-        // dokolku ima - znaci ima nekoj prefix
-        if (categoryName.contains("-")) {
-            String prefix = categoryName.substring(0, categoryName.indexOf("-")).trim();
-            category.setPrefix(prefix);
-            //prebaruvame dali imame vekje nekoja kategorija so toj prefix i dokolku go nema angliskoto ili makedonskoto ime da se stavi
-            oldCategory = categoryService.findByPrefix(category.getPrefix());
-            if (oldCategory != null) {
-                if (cellNum == MK_NAME){
-                    oldCategory.setName(categoryName);
-                } else {
-                    oldCategory.setEnglishName(categoryName);
-                }
-                category = oldCategory;
-            }
-            //mestime subcategory
-            if (prefix.contains(".")) {
-                prefix = prefix.substring(0, prefix.lastIndexOf("."));
-                Category subcategory = categoryService.findByPrefix(prefix);
-                if (subcategory != null) {
-                    category.setSubcategory(subcategory);
-                }
-            }
-        }
-        if (cellNum == MK_NAME) {
-            category.setName(categoryName);
-        } else {
-            category.setEnglishName(categoryName);
-        }
-
-        return category;
-    }
-
-    private AnalysisCategoryGas createAnalysisCategoryGas(Analysis analysis, Category category, Gas gas, double concentrate) {
-
-        category = categoryService.saveCategory(category);
-
-        AnalysisCategoryGas analysisCategoryGas = analysisCategoryGasService.findByAnalysisCategoryAndGas(analysis, category, gas);
-
-        //ako postoe vekje ovaa vrska togas samo da go dodadime concentrate
-        if (analysisCategoryGas != null){
-            if (analysisCategoryGas.getConcentrate() == concentrate) {
-                return null;
-            }
-             analysisCategoryGas.setConcentrate(concentrate);
-             return analysisCategoryGas;
-        }
-
-        analysisCategoryGas = new AnalysisCategoryGas();
-        analysisCategoryGas.setAnalysis(analysis);
-        analysisCategoryGas.setCategory(category);
-        analysisCategoryGas.setGas(gas);
-        analysisCategoryGas.setConcentrate(concentrate);
-
-        return analysisCategoryGas;
-    }
-
-    private Analysis getAnalysis(String year) {
-        Analysis analysis = analysisRepository.findByYearEquals(year);
-        if (analysis != null) {
-            return analysis;
-        }
-        analysis = new Analysis();
-        analysis.setYear(year);
-
-        return analysisRepository.save(analysis);
-    }
-
-    private String getYearFromString(String strYear) {
-        //dokolku a zeme double vrednost ima 1990.00 a da parsiram vo integer mi dava error
-        if (strYear.contains(".")) {
-            strYear = strYear.substring(0, strYear.indexOf("."));
-        }
-        return strYear;
-    }
-
-    private boolean isNumber(Cell cell) {
-        return cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA;
-    }
-
-    private boolean isEmptyString(String text) {
-        return text.isEmpty() || text.isBlank() || text.equals("");
-    }
 }

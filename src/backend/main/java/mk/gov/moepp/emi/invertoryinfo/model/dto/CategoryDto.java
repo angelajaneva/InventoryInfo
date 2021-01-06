@@ -3,20 +3,19 @@ package mk.gov.moepp.emi.invertoryinfo.model.dto;
 public class CategoryDto {
     private int id;
     private String name;
-    private String enName;
 //    private String prefix;
     private int parent = -1;
     private boolean checked = false;
 
-    public CategoryDto(int id, String name, String enName, int parent) {
+    public CategoryDto(int id, String name, int parent) {
         this.id = id;
         this.name = name;
-        this.enName = enName;
         this.parent = parent;
         if (parent == -1){
             this.checked = true;
         }
     }
+
 
     public int getId() {
         return id;
@@ -50,11 +49,4 @@ public class CategoryDto {
         this.name = mkName;
     }
 
-    public String getEnName() {
-        return enName;
-    }
-
-    public void setEnName(String enName) {
-        this.enName = enName;
-    }
 }

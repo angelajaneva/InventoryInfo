@@ -1,15 +1,14 @@
 package mk.gov.moepp.emi.invertoryinfo.mappers.impl;
 
-import com.sun.xml.bind.v2.model.core.ID;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.*;
 import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.mappers.AnalysisMapper;
+import mk.gov.moepp.emi.invertoryinfo.model.Year;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
-import mk.gov.moepp.emi.invertoryinfo.model.AnalysisCategoryGas;
 import mk.gov.moepp.emi.invertoryinfo.model.Category;
 import mk.gov.moepp.emi.invertoryinfo.model.Gas;
-import mk.gov.moepp.emi.invertoryinfo.service.AnalysisCategoryGasService;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisService;
+import mk.gov.moepp.emi.invertoryinfo.service.YearService;
 import mk.gov.moepp.emi.invertoryinfo.service.CategoryService;
 import mk.gov.moepp.emi.invertoryinfo.service.GasService;
 import org.springframework.stereotype.Service;
@@ -21,21 +20,21 @@ import java.util.stream.Collectors;
 @Service
 public class AnalysisMapperImpl implements AnalysisMapper {
 
-    private final AnalysisService analysisService;
+    private final YearService yearService;
     private final GasService gasService;
     private final CategoryService categoryService;
-    private final AnalysisCategoryGasService analysisCategoryGasService;
+    private final AnalysisService analysisService;
 
-    public AnalysisMapperImpl(AnalysisService analysisService, GasService gasService, CategoryService categoryService, AnalysisCategoryGasService analysisCategoryGasService) {
-        this.analysisService = analysisService;
+    public AnalysisMapperImpl(YearService yearService, GasService gasService, CategoryService categoryService, AnalysisService analysisService) {
+        this.yearService = yearService;
         this.gasService = gasService;
         this.categoryService = categoryService;
-        this.analysisCategoryGasService = analysisCategoryGasService;
+        this.analysisService = analysisService;
     }
 
     @Override
     public AnalysisYearlyDto getByYear(String year, List<Integer> gassesId, List<Integer> categoriesId) {
-        Analysis analysis = analysisService.getByYear(year);
+        Year analysis = yearService.getByYear(year);
         if (analysis == null){
             throw new ResourceNotFound(year + " not found");
         }
@@ -46,8 +45,8 @@ public class AnalysisMapperImpl implements AnalysisMapper {
 
         for (var gas : gasList){
             for (var category : categoryList){
-                AnalysisCategoryGasDto analysisCategoryGasDto = mapToAnalysisCategoriesGasDto(analysis, category, gas);
-                analysisYearlyDto.addNewAnalysis(gas.getName(), analysisCategoryGasDto);
+                AnalysisDto analysisDto = mapToAnalysisCategoriesGasDto(analysis, category, gas);
+                analysisYearlyDto.addNewAnalysis(gas.getName(), analysisDto);
             }
         }
 
@@ -60,15 +59,15 @@ public class AnalysisMapperImpl implements AnalysisMapper {
         if (gas == null){
             throw new ResourceNotFound(gasName + " not found");
         }
-        List<Analysis> analysisList = analysisService.findAllByIds(analysisId);
+        List<Year> yearList = yearService.findAllByIds(analysisId);
         List<Category> categoryList = categoryService.findAllByIds(categoriesId);
         AnalysisGasDto analysisGasDto = new AnalysisGasDto();
         analysisGasDto.setGas(gas);
 
-        for (Analysis analysis : analysisList) {
+        for (Year year : yearList) {
             for (Category category : categoryList) {
-                AnalysisCategoryGasDto analysisCategoryGasDto = mapToAnalysisCategoriesGasDto(analysis, category, gas);
-                analysisGasDto.addNewAnalysis(analysis, analysisCategoryGasDto);
+                AnalysisDto analysisDto = mapToAnalysisCategoriesGasDto(year, category, gas);
+                analysisGasDto.addNewAnalysis(year, analysisDto);
             }
         }
 
@@ -76,39 +75,42 @@ public class AnalysisMapperImpl implements AnalysisMapper {
     }
 
     @Override
-    public List<AnalysisDto> getByGasId(int gasId) {
-        var analysisCategoryGas = analysisCategoryGasService.findAllByGasId(gasId);
+    public List<YearDto> getByGasId(int gasId) {
+        var analysisCategoryGas = analysisService.findAllByGas(gasId);
         List<Integer> list = new ArrayList<>();
         for (var analysis :analysisCategoryGas) {
-            list.add(analysis.getAnalysis().getId());
+            list.add(analysis.getYear().getId());
         }
-        var analysis = analysisService.findAllByIds(list);
+        var analysis = yearService.findAllByIds(list);
         return analysis.stream()
-                .map(a -> new AnalysisDto(a.getId(),a.getYear(), false))
+                .map(a -> new YearDto(a.getId(),a.getYear(), false))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<AnalysisDto> getAllYears() {
-        var analysisCategoryGas = analysisCategoryGasService.getAllAnalysisCategoryGas();
+    public List<YearDto> getAllYears() {
+        var analysisCategoryGas = analysisService.getAllAnalysis();
         List<Integer> list = new ArrayList<>();
         for (var analysis :analysisCategoryGas) {
-            list.add(analysis.getAnalysis().getId());
+            list.add(analysis.getYear().getId());
         }
-        var analysis = analysisService.findAllByIds(list);
+        var analysis = yearService.findAllByIds(list);
         return analysis.stream()
-                .map(a -> new AnalysisDto(a.getId(),a.getYear(), false))
+                .map(a -> new YearDto(a.getId(),a.getYear(), false))
                 .collect(Collectors.toList());
     }
 
-    private AnalysisCategoryGasDto mapToAnalysisCategoriesGasDto(Analysis analysis, Category category, Gas gas){
-        AnalysisCategoryGas analysisCategoryGas = analysisCategoryGasService.findByAnalysisCategoryAndGasName(analysis,category,gas);
-        if (analysisCategoryGas == null){
-            throw new ResourceNotFound("Relation not found");
-        }
-        CategoryDto categoryDto = new CategoryDto(category.getId(),category.getName(),category.getEnglishName(), category.getSubcategory() == null?-1:category.getSubcategory().getId());
+    private AnalysisDto mapToAnalysisCategoriesGasDto(Year year, Category category, Gas gas){
+        Analysis analysis = analysisService.findByYearCategoryAndGasName(year.getId(),category.getId(),gas.getName());
+//        if (analysisCategoryGas == null){
+//            throw new ResourceNotFound("Relation not found");
+//        }
+        CategoryDto categoryDto = new CategoryDto(
+                category.getId(),
+                category.getName(),
+                category.getParent() == null? -1 : category.getParent().getId());
 
-        return new AnalysisCategoryGasDto(analysis.getYear(),gas.getName(),categoryDto,analysisCategoryGas.getConcentrate());
+        return new AnalysisDto(year.getYear(),gas.getName(),categoryDto, analysis == null ? 0 : analysis.getConcentrate());
     }
 
 }

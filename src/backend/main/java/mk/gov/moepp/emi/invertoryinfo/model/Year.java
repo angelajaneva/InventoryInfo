@@ -20,12 +20,13 @@ public class Year {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
+
     private String year;
 
     @Column(name = "deleted")
     private boolean deleted = false;
 
-    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Analysis> analyses;
 

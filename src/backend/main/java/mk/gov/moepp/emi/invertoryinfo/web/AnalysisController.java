@@ -68,7 +68,7 @@ public class AnalysisController {
     }
 
     @GetMapping(path = "/yearly/{year}")
-    public AnalysisYearlyDto getAllBaryYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
+    public AnalysisYearlyDto getAllByYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
         return analysisMapper.getByYear(year,Arrays.asList(gassesId),Arrays.asList(categoryId));
     }
 
@@ -87,9 +87,19 @@ public class AnalysisController {
         return yearService.getAllAnalysis();
     }
 
-    @GetMapping(path = "/{id}")
-    public Optional<Analysis> getAnalysisById(@PathVariable int id){
-        return analysisService.getAnalysis(id);
+    @GetMapping(path = "/{year}")
+    public Optional<Year> getAnalysisById(@PathVariable String year){
+        return Optional.ofNullable(yearService.getByYear(year));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping(path = "/{year}/edit")
+    public void editYear(@PathVariable String year, @RequestBody String newYear){
+        if (!year.equals(newYear)) {
+            Year model = yearService.getByYear(year);
+            model.setYear(newYear);
+            yearService.saveAnalysis(model);
+        }
     }
 
     @PostMapping
@@ -105,7 +115,7 @@ public class AnalysisController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAnalysis(@PathVariable int id){
-        analysisService.deleteAnalysis(id);
+    public void deleteYear(@PathVariable int id){
+        yearService.deleteAnalysis(id);
     }
 }

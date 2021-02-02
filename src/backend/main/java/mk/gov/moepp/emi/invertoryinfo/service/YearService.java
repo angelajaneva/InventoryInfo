@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface YearService {
 
-    List<Year> getAllAnalysis();
+    List<Year> getAllYears();
 
-    Year getAnalysisById(int id);
+    Year getYearById(int id);
 
-    Year saveAnalysis(Year year);
+    Year saveYear(Year year);
 
-    Year editAnalysis(int id, YearRequest analysis);
+    Year editYear(int id, YearRequest analysis);
 
-    void deleteAnalysis(int id);
+    void deleteYear(int id);
 
     Year getByYear(String year);
 

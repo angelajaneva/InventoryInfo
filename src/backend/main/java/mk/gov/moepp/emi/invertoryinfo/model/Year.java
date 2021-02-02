@@ -14,17 +14,17 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "year")
-@Where(clause = "deleted=false")
+//@Where(clause = "deleted=false")
 public class Year {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
-
+    @Column(unique = true)
     private String year;
 
-    @Column(name = "deleted")
-    private boolean deleted = false;
+//    @Column(name = "deleted")
+//    private boolean deleted = false;
 
     @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -42,11 +42,11 @@ public class Year {
         this.year = year;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+//    public boolean isDeleted() {
+//        return deleted;
+//    }
+//
+//    public void setDeleted(boolean deleted) {
+//        this.deleted = deleted;
+//    }
 }

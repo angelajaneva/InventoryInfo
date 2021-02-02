@@ -45,32 +45,30 @@ public class YearServiceImpl implements YearService {
 
 
     @Override
-    public List<Year> getAllAnalysis() {
+    public List<Year> getAllYears() {
         return yearRepository.findAll();
     }
 
     @Override
-    public Year getAnalysisById(int id) {
+    public Year getYearById(int id) {
         return yearRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    public Year saveAnalysis(Year year) {
+    public Year saveYear(Year year) {
         return yearRepository.save(year);
     }
 
     @Override
-    public Year editAnalysis(int id, YearRequest yearRequest) {
+    public Year editYear(int id, YearRequest yearRequest) {
         Year year = yearRepository.findById(id).orElse(new Year());
         year.setYear(yearRequest.getYear());
         return yearRepository.save(year);
     }
 
     @Override
-    public void deleteAnalysis(int id) {
-        Year year = yearRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        year.setDeleted(true);
-        yearRepository.save(year);
+    public void deleteYear(int id) {
+       yearRepository.deleteById(id);
     }
 
     @Override

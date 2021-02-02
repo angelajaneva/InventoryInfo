@@ -6,6 +6,7 @@ import mk.gov.moepp.emi.invertoryinfo.model.Year;
 import mk.gov.moepp.emi.invertoryinfo.model.Analysis;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.YearDto;
 import mk.gov.moepp.emi.invertoryinfo.model.dto.AnalysisYearlyDto;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.model.requests.YearRequest;
 import mk.gov.moepp.emi.invertoryinfo.service.AnalysisService;
 import mk.gov.moepp.emi.invertoryinfo.service.impl.YearServiceImpl;
@@ -51,8 +52,8 @@ public class AnalysisController {
 //    }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/upload/{year}") // //new annotation since 4.3
-    public void singleFileUploadYearly(@RequestParam("file") MultipartFile file, @PathVariable(name = "year") String year) throws FileNotFoundException {
+    @PostMapping(path = "/upload") // //new annotation since 4.3
+    public void singleFileUploadYearly(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "year") String year) throws FileNotFoundException {
 
         if (file.isEmpty()) {
 //            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -84,7 +85,7 @@ public class AnalysisController {
 
     @GetMapping
     public List<Year> getAllAnalysis(){
-        return yearService.getAllAnalysis();
+        return yearService.getAllYears();
     }
 
     @GetMapping(path = "/{year}")
@@ -93,29 +94,25 @@ public class AnalysisController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping(path = "/{year}/edit")
-    public void editYear(@PathVariable String year, @RequestBody String newYear){
-        if (!year.equals(newYear)) {
+    @PutMapping(path = "/{year}")
+    public void editAnalysis(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam(name = "newYear") String newYear, @PathVariable(name = "year") String year) throws FileNotFoundException {
+        if (newYear != null && !year.equals(newYear)) {
             Year model = yearService.getByYear(year);
+            if (model == null) {
+                throw new ResourceNotFound("Year not found");
+            }
             model.setYear(newYear);
-            yearService.saveAnalysis(model);
+            yearService.saveYear(model);
         }
-    }
+        if (file != null && !file.isEmpty()) {
+            yearService.saveFromFileYearly(newYear,file);
+        }
 
-    @PostMapping
-    public Year saveAnalysis(@RequestBody Year year){
-        return yearService.saveAnalysis(year);
-    }
-
-    // ako treba mozze DTO
-    @PutMapping(path = "/{id}")
-    public Year editAnalysis(@PathVariable int id, @RequestBody YearRequest year){
-        return yearService.editAnalysis(id, year);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteYear(@PathVariable int id){
-        yearService.deleteAnalysis(id);
+        yearService.deleteYear(id);
     }
 }

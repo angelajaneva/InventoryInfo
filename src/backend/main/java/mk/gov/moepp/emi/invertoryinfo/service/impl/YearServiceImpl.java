@@ -73,7 +73,11 @@ public class YearServiceImpl implements YearService {
 
     @Override
     public Year getByYear(String year) {
-        return yearRepository.findByYearEquals(year);
+        Year yearModel = yearRepository.findByYearEquals(year);
+        if(yearModel == null){
+            throw new ResourceNotFound("Year not found");
+        }
+        return yearModel;
     }
 
     @Override

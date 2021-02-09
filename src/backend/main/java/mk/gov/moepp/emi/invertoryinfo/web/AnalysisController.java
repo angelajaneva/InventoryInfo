@@ -89,8 +89,8 @@ public class AnalysisController {
     }
 
     @GetMapping(path = "/{year}")
-    public Optional<Year> getAnalysisById(@PathVariable String year){
-        return Optional.ofNullable(yearService.getByYear(year));
+    public Year getAnalysisById(@PathVariable String year){
+        return yearService.getByYear(year);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

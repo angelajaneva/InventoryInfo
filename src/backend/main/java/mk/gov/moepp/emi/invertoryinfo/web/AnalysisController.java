@@ -94,7 +94,11 @@ public class AnalysisController {
 
     @GetMapping(path = "/{year}")
     public Year getAnalysisById(@PathVariable String year){
-        return yearService.getByYear(year);
+        Year yearModel = yearService.getByYear(year);
+        if(yearModel == null){
+            throw new ResourceNotFound("Year not found");
+        }
+        return yearModel;
     }
 
     @ResponseStatus(HttpStatus.CREATED)

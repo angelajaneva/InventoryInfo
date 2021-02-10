@@ -54,6 +54,10 @@ public class AnalysisController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/upload") // //new annotation since 4.3
     public void singleFileUploadYearly(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "year") String year) throws FileNotFoundException {
+        Year yearModel = yearService.getByYear(year);
+        if (yearModel != null){
+            throw new RuntimeException("Year already exist try again");
+        }
 
         if (file.isEmpty()) {
 //            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");

@@ -32,7 +32,7 @@ public class AnalysisController {
     private final AnalysisMapper analysisMapper;
     private final AnalysisService analysisService;
 
-    public AnalysisController(YearServiceImpl yearService, AnalysisMapper analysisMapper, AnalysisService analysisService){
+    public AnalysisController(YearServiceImpl yearService, AnalysisMapper analysisMapper, AnalysisService analysisService) {
         this.yearService = yearService;
         this.analysisMapper = analysisMapper;
         this.analysisService = analysisService;
@@ -51,11 +51,18 @@ public class AnalysisController {
 //        yearService.saveFromFile(file, gas);
 //    }
 
+    /**
+     *
+     * @param file - File for reading analysis data
+     * @param year - year of analysis
+     * @throws FileNotFoundException - file not exist
+     * @throws RuntimeException - if year already exist we cant add again
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/upload") // //new annotation since 4.3
-    public void singleFileUploadYearly(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "year") String year) throws FileNotFoundException {
+    public void createAnalysis(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "year") String year) throws FileNotFoundException {
         Year yearModel = yearService.getByYear(year);
-        if (yearModel != null){
+        if (yearModel != null) {
             throw new RuntimeException("Year already exist try again");
         }
 
@@ -64,63 +71,70 @@ public class AnalysisController {
             throw new FileNotFoundException("File not found");
         }
 
-        yearService.saveFromFileYearly(year,file);
+        yearService.saveFromFileYearly(year, file);
     }
 
+    /**
+     *
+     * @param id - gas id
+     * @return - returns all years where gas was included
+     */
     @GetMapping(path = "/gas/{id}")
-    public List<YearDto> getAllByGasId(@PathVariable int id){
+    public List<YearDto> getAllByGasId(@PathVariable int id) {
         return analysisMapper.getByGasId(id);
     }
 
+    /**
+     *
+     * @param year - selected year
+     * @param gassesId - selected gasses
+     * @param categoryId - selected categories
+     * @return - returns all analysis for one year with selected gasses and categories
+     */
     @GetMapping(path = "/yearly/{year}")
-    public AnalysisYearlyDto getAllByYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId){
-        return analysisMapper.getByYear(year,Arrays.asList(gassesId),Arrays.asList(categoryId));
+    public AnalysisYearlyDto getAllByYear(@PathVariable(name = "year") String year, @RequestParam(name = "gassesId") Integer[] gassesId, @RequestParam(name = "categoryId") Integer[] categoryId) {
+        return analysisMapper.getByYear(year, Arrays.asList(gassesId), Arrays.asList(categoryId));
     }
 
-    @GetMapping(path = "/all/data")
-    public Set<Analysis> getAllByIds(@RequestParam(name = "gasIds")List<Integer> gasIds, @RequestParam(name = "categoryIds")List<Integer> categoryIds, @RequestParam(name = "analysisIds")List<Integer> analysisIds){
-        return analysisService.findAllByIds(gasIds, categoryIds,  analysisIds);
-    }
-
+    /**
+     *
+     * @param gasIds - selected gasses
+     * @param categoryIds - selected categories
+     * @param analysisIds - selected analysis
+     * @return - returns all analysis with selected params
+     */
     @GetMapping(path = "/all")
+    public Set<Analysis> getAllByIds(@RequestParam(name = "gasIds") List<Integer> gasIds, @RequestParam(name = "categoryIds") List<Integer> categoryIds, @RequestParam(name = "analysisIds") List<Integer> analysisIds) {
+        return analysisService.findAllByIds(gasIds, categoryIds, analysisIds);
+    }
+
+    /**
+     *
+     * @return - returning all analysis
+     */
+    @GetMapping
     public List<Analysis> getAll(){
         return analysisService.getAllAnalysis();
     }
 
-    @GetMapping
-    public List<Year> getAllAnalysis(){
-        return yearService.getAllYears();
-    }
 
-    @GetMapping(path = "/{year}")
-    public Year getAnalysisById(@PathVariable String year){
-        Year yearModel = yearService.getByYear(year);
-        if(yearModel == null){
-            throw new ResourceNotFound("Year not found");
-        }
-        return yearModel;
-    }
-
+    /**
+     * Editing analysis by year
+     * @param file - File for reading analysis data
+     * @param newYear - edit old year with new
+     * @param year - old year
+     * @throws FileNotFoundException - file not found
+     * @throws ResourceNotFound - old year not existing
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(path = "/{year}")
     public void editAnalysis(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam(name = "newYear") String newYear, @PathVariable(name = "year") String year) throws FileNotFoundException {
         if (newYear != null && !year.equals(newYear)) {
-            Year model = yearService.getByYear(year);
-            if (model == null) {
-                throw new ResourceNotFound("Year not found");
-            }
-            model.setYear(newYear);
-            yearService.saveYear(model);
+            yearService.editYear(year, newYear);
         }
         if (file != null && !file.isEmpty()) {
             yearService.saveFromFileYearly(newYear,file);
         }
-
     }
 
-    @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteYear(@PathVariable int id){
-        yearService.deleteYear(id);
-    }
 }

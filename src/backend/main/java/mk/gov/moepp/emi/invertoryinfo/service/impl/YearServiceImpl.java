@@ -34,7 +34,6 @@ public class YearServiceImpl implements YearService {
     private final CategoryService categoryService;
     private final GasService gasService;
     private final AnalysisService analysisService;
-    private final int MK_NAME = 0;
 
     public YearServiceImpl(YearRepository yearRepository, CategoryService categoryService, GasService gasService, AnalysisService analysisService) {
         this.yearRepository = yearRepository;
@@ -60,10 +59,13 @@ public class YearServiceImpl implements YearService {
     }
 
     @Override
-    public Year editYear(int id, YearRequest yearRequest) {
-        Year year = yearRepository.findById(id).orElse(new Year());
-        year.setYear(yearRequest.getYear());
-        return yearRepository.save(year);
+    public Year editYear(String year, String newYear) {
+        Year model = yearRepository.findByYearEquals(year);
+        if (model == null){
+            throw new ResourceNotFound("Year not found");
+        }
+        model.setYear(newYear);
+        return yearRepository.save(model);
     }
 
     @Override
@@ -73,9 +75,7 @@ public class YearServiceImpl implements YearService {
 
     @Override
     public Year getByYear(String year) {
-        Year yearModel = yearRepository.findByYearEquals(year);
-
-        return yearModel;
+        return yearRepository.findByYearEquals(year);
     }
 
     @Override
@@ -121,19 +121,21 @@ public class YearServiceImpl implements YearService {
                      break;
                  }
 
-                 //ako gi citame gasovite
+                 //Reading gasses on row = 2
                  if (rowNum == 2 && cellNum > 0 && cell.getCellType() == CellType.STRING){
                      String gasName = cell.getStringCellValue();
                      if (!isEmptyString(gasName)) {
                          gasses.add(getGas(gasName));
                      }
                  }
+                 //if row > 2 and type is string than that is category
                  else if (rowNum > 2 && cell.getCellType() == CellType.STRING) {
 //                     howManyCategoriesInRow = cellNum + 1;
                      String categoryName = cell.getStringCellValue().trim();
                      if (!isEmptyString(categoryName))
                          category = getCategory(category, categoryName);
                  }
+                 //if row > 2 and cell type is number than that is concentrate and we need to create analysis
                  else if (rowNum > 2 && isNumber(cell) && !gasses.isEmpty()){
                      double concentrate = cell.getNumericCellValue();
                      //go zimame prviot
@@ -150,7 +152,10 @@ public class YearServiceImpl implements YearService {
             if (!allAnalysis.isEmpty()){
                 analysisService.saveAllAnalysis(allAnalysis);
             }
-        } catch (IOException e) {
+        } catch (FileNotSupported fileNotSupported) {
+            throw new FileNotSupported("File is not supported");
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

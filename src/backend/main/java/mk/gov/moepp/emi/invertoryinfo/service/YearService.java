@@ -15,7 +15,7 @@ public interface YearService {
 
     Year saveYear(Year year);
 
-    Year editYear(int id, YearRequest analysis);
+    Year editYear(String year, String newYear);
 
     void deleteYear(int id);
 

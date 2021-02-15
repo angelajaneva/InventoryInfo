@@ -97,10 +97,6 @@ public class YearServiceImpl implements YearService {
         XSSFWorkbook workbook = null;
         try {
             workbook = new XSSFWorkbook(file.getInputStream());
-            int numberOfSheets = workbook.getNumberOfSheets();
-            if (numberOfSheets > 1) {
-                throw new FileNotSupported("Only support files with 1 sheet");
-            }
             XSSFSheet xssfSheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = xssfSheet.rowIterator();
 //            int howManyCategoriesInRow = Integer.MAX_VALUE;
@@ -128,7 +124,6 @@ public class YearServiceImpl implements YearService {
                          gasses.add(getGas(gasName));
                      }
                  }
-                 //if row > 2 and type is string than that is category
                  else if (rowNum > 2 && cell.getCellType() == CellType.STRING) {
 //                     howManyCategoriesInRow = cellNum + 1;
                      String categoryName = cell.getStringCellValue().trim();

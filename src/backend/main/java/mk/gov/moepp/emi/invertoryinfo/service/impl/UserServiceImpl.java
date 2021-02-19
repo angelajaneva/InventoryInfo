@@ -2,6 +2,8 @@ package mk.gov.moepp.emi.invertoryinfo.service.impl;
 
 import mk.gov.moepp.emi.invertoryinfo.model.User;
 import mk.gov.moepp.emi.invertoryinfo.model.UserRole;
+import mk.gov.moepp.emi.invertoryinfo.model.dto.UserDto;
+import mk.gov.moepp.emi.invertoryinfo.model.exception.ResourceNotFound;
 import mk.gov.moepp.emi.invertoryinfo.repository.UserRepository;
 import mk.gov.moepp.emi.invertoryinfo.repository.UserRoleRepository;
 import mk.gov.moepp.emi.invertoryinfo.service.UserService;
@@ -41,5 +43,15 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
         return user;
+    }
+
+    @Override
+    public UserDto getUser(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFound("User not found!");
+        }
+
+        return new UserDto(user.getUsername(), user.getAuthorities());
     }
 }

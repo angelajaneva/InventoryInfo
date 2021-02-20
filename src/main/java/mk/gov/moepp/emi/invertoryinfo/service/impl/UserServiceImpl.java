@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
             userRoleRepository.saveAndFlush(role);
         }
 
-        User user = User.createNewUser("admin@test.com", passwordEncoder.encode("123"),
+        User user = User.createNewUser("admin@test.com", passwordEncoder.encode("klimatskipromeni2021"),
                 List.of(userRoleRepository.findByName("ROLE_ADMIN").orElseThrow(RuntimeException::new)));
 
         if (userRepository.count() == 0 )
